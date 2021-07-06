@@ -1,4 +1,4 @@
-package Permission.Superuser;
+package Permission.Leader;
 
 public interface Staff_Checkable {}
 
