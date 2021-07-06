@@ -1,7 +1,5 @@
-package Permission.Empolyee;
+package Permission.Leader;
 
 public interface Staff_Checkable {}
 
 public interface Staff_Modifiable {}
-
-public interface Project_Checkable {}
