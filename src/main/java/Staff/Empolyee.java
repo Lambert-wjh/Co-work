@@ -1,10 +1,11 @@
 package Staff;
 
 import Permission.Empolyee.*;
+import Tools.Enums.Position;
+import Tools.Enums.Sex;
+import Tools.Account;
 
-public class Empolyee extends Person implements Staff_Checkable,
-    Staff_Modifiable,
-    Project_Checkable {
+public class Empolyee extends Person implements Staff_Related, Project_Related {
     private String number;
     private Account account;
     private String leader_number;
@@ -55,8 +56,16 @@ public class Empolyee extends Person implements Staff_Checkable,
     public double GetSalary() {
         return this.salary;
     }
-}
 
-enum Position {
-    EMPOLYEE, LEADER, SUPERUSER;
+    @Override
+    public void CheckEmpolyeeInfo() {
+    }
+
+    @Override
+    public void ChangePassword() {
+    }
+
+    @Override
+    public void CheckProjectInfo() {
+    }
 }

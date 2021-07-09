@@ -1,4 +1,4 @@
-package Staff;
+package Tools;
 
 public class Account {
     private String account;

@@ -1,5 +1,7 @@
 package Staff;
 
+import Tools.Enums.Sex;
+
 public class Person {
     private String name;
     private Sex sex;
@@ -34,8 +36,4 @@ public class Person {
     public int GetAge() {
         return this.age;
     }
-}
-
-enum Sex {
-    MALE, FEMALE;
 }
