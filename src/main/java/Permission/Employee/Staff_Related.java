@@ -1,6 +1,6 @@
-package Permission.Empolyee;
+package Permission.Employee;
 
 public interface Staff_Related {
-    public void CheckEmpolyeeInfo();
+    public void CheckEmployeeInfo();
     public void ChangePassword();
 }

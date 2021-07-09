@@ -3,37 +3,38 @@ package Staff;
 import Tools.Enums.Sex;
 
 public class Person {
-    private String name;
-    private Sex sex;
-    private int age;
+    protected String name;
+    protected Sex sex;
+    protected int age;
 
-    public Person(String name, Sex sex, int age) {
+
+    protected Person(String name, Sex sex, int age) {
         this.name = name;
         this.sex = sex;
         this.age = age;
     }
 
-    public void SetName(String name) {
+
+    protected void SetName(String name) {
         this.name = name;
     }
-
-    public String GetName() {
+    protected String GetName() {
         return this.name;
     }
 
-    public void SetSex(Sex sex) {
+
+    protected void SetSex(Sex sex) {
         this.sex = sex;
     }
-
-    public Sex GetSex() {
+    protected Sex GetSex() {
         return this.sex;
     }
 
-    public void SetAge(int age) {
+
+    protected void SetAge(int age) {
         this.age = age;
     }
-
-    public int GetAge() {
+    protected int GetAge() {
         return this.age;
     }
 }

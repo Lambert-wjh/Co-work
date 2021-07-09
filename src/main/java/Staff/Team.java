@@ -7,14 +7,14 @@ import Business.Project;
 
 public class Team {
     private Leader leader;
-    private List<Empolyee> employees;
+    private List<Employee> employees;
     private Project project;
 
-    public Team(Leader leader, Empolyee[] empolyees, Project project) {
+    public Team(Leader leader, Employee[] employees, Project project) {
         this.leader = leader;
         this.employees = new ArrayList<>();
-        for (Empolyee empolyee : empolyees) {
-            this.employees.add(empolyee);
+        for (Employee employee : employees) {
+            this.employees.add(employee);
         }
         this.project = project;
     }
