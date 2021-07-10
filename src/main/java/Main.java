@@ -8,15 +8,9 @@ public class Main {
         Menu menu = new Menu();
         Superuser user = Login();
         switch (user.GetPosition()) {
-            case EMPLOYEE:
-                menu.EmployeeMenu(user);
-                break;
-            case LEADER:
-                menu.LeaderMenu(user);
-                break;
-            case SUPERUSER:
-                menu.SuperuserMenu(user);
-                break;
+            case EMPLOYEE -> menu.EmployeeMenu(user);
+            case LEADER -> menu.LeaderMenu(user);
+            case SUPERUSER -> menu.SuperuserMenu(user);
         }
     }
 

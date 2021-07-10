@@ -18,16 +18,18 @@ public class StaffFactory {
         try (Connection conn = jdbc.GetConnection()) {
             // Staff's attributes: id, name, sex, age, leader_id, position, sales, salary,
             // password
-            try (PreparedStatement prepared_statement = conn.prepareStatement("SELECT * FROM staff Where id=?")) {
+            try (PreparedStatement prepared_statement = conn.prepareStatement("SELECT * FROM Staff Where id=?")) {
                 prepared_statement.setObject(1, require_id);
                 try (ResultSet result_set = prepared_statement.executeQuery()) {
                     while (result_set.next()) {
                         String id = result_set.getString("id");
                         String name = result_set.getString("name");
-                        Sex sex = (Sex) result_set.getObject("sex");
+                        Sex sex = Sex.valueOf(result_set.getString("sex"));
+                        // Sex sex = (Sex) result_set.getObject("sex");
                         int age = result_set.getInt("age");
                         String leader_id = result_set.getString("leader_id");
-                        Position position = (Position) result_set.getObject("position");
+                        Position position = Position.valueOf(result_set.getString("position"));
+                        // Position position = (Position) result_set.getObject("position");
                         double sales = result_set.getDouble("sales");
                         double salary = result_set.getDouble("salary");
                         String password = result_set.getString("password");

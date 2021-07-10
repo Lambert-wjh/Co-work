@@ -5,6 +5,7 @@ import java.util.Scanner;
 import Staff.Employee;
 import Staff.Leader;
 import Staff.Superuser;
+import Tools.Enums.Position;
 
 public class Menu {
     public void EmployeeMenu(Employee employee) {
@@ -13,18 +14,14 @@ public class Menu {
         int second_selection = 0;
 
         do {
-            System.out.println("1. Person related");
-            System.out.println("2. Project related");
-            System.out.println("0. Quit");
+            PrintFirstMenu(employee.GetPosition());
 
             System.out.print("Enter selection: ");
             first_selection = input.nextInt();
             switch (first_selection) {
                 case 1 -> {
                     do {
-                        System.out.println("1. Change password");
-                        System.out.println("2. Check personal information");
-                        System.out.println("0. Quit");
+                        PrintSecondMenu(employee.GetPosition(), first_selection);
 
                         System.out.print("Enter selection: ");
                         second_selection = input.nextInt();
@@ -40,8 +37,7 @@ public class Menu {
                 }
                 case 2 -> {
                     do {
-                        System.out.println("1. Check project's information");
-                        System.out.println("0. Quit");
+                        PrintSecondMenu(employee.GetPosition(), first_selection);
 
                         System.out.print("Enter selection: ");
                         second_selection = input.nextInt();
@@ -63,21 +59,12 @@ public class Menu {
         int second_selection = 0;
 
         do {
-            System.out.println("1. Person related");
-            System.out.println("2. Project related");
-            System.out.println("3. Team related");
-            System.out.println("0. Quit");
-
-            System.out.print("Enter selection: ");
+            PrintFirstMenu(leader.GetPosition());
             first_selection = input.nextInt();
             switch (first_selection) {
                 case 1 -> {
                     do {
-                        System.out.println("1. Change password");
-                        System.out.println("2. Check personal information");
-                        System.out.println("0. Quit");
-
-                        System.out.print("Enter selection: ");
+                        PrintSecondMenu(leader.GetPosition(), first_selection);
                         second_selection = input.nextInt();
                         switch (second_selection) {
                             case 1 -> {
@@ -91,11 +78,7 @@ public class Menu {
                 }
                 case 2 -> {
                     do {
-                        System.out.println("1. Check project's information");
-                        System.out.println("2. Update project's status");
-                        System.out.println("0. Quit");
-
-                        System.out.print("Enter selection: ");
+                        PrintSecondMenu(leader.GetPosition(), first_selection);
                         second_selection = input.nextInt();
                         switch (second_selection) {
                             case 1 -> {
@@ -109,10 +92,7 @@ public class Menu {
                 }
                 case 3 -> {
                     do {
-                        System.out.println("1. Check members' information");
-                        System.out.println("0. Quit");
-
-                        System.out.print("Enter selection: ");
+                        PrintSecondMenu(leader.GetPosition(), first_selection);
                         second_selection = input.nextInt();
                         switch (second_selection) {
                             case 1 -> {
@@ -128,5 +108,64 @@ public class Menu {
 
     public void SuperuserMenu(Superuser superuser) {
         System.out.println("Thank you for using");
+    }
+
+    private void PrintFirstMenu(Position position) {
+        switch (position) {
+            case EMPLOYEE -> {
+                System.out.println("1. Person related");
+                System.out.println("2. Project related");
+                System.out.println("0. Quit");
+            }
+            case LEADER -> {
+                System.out.println("1. Person related");
+                System.out.println("2. Project related");
+                System.out.println("3. Team related");
+                System.out.println("0. Quit");
+            }
+            case SUPERUSER -> {
+                ;
+            }
+        }
+    }
+
+    private void PrintSecondMenu(Position position, int selection) {
+        if (position.name().equals("EMPLOYEE")) {
+            switch (selection) {
+                case 1 -> {
+                    System.out.println("1. Change password");
+                    System.out.println("2. Check personal information");
+                    System.out.println("0. Back to previous menu");
+                    System.out.print("Enter selection: ");
+                }
+                case 2 -> {
+                    System.out.println("1. Check project's information");
+                    System.out.println("0. Back to previous menu");
+                    System.out.print("Enter selection: ");
+                }
+            }
+        } else if (position.name().equals("LEADER")) {
+            switch (selection) {
+                case 1 -> {
+                    System.out.println("1. Change password");
+                    System.out.println("2. Check personal information");
+                    System.out.println("0. Back to previous menu");
+                    System.out.print("Enter selection: ");
+                }
+                case 2 -> {
+                    System.out.println("1. Check project's information");
+                    System.out.println("2. Update project's status");
+                    System.out.println("0. Back to previous menu");
+                    System.out.print("Enter selection: ");
+                }
+                case 3 -> {
+                    System.out.println("1. Check members' information");
+                    System.out.println("0. Back to previous menu");
+                    System.out.print("Enter selection: ");
+                }
+            }
+        } else {
+            ;
+        }
     }
 }
