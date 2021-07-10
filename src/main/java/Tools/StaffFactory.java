@@ -12,13 +12,13 @@ import Tools.Enums.Position;
 import Tools.Enums.Sex;
 
 public class StaffFactory {
-    private Superuser CreateStaff(String require_id) throws SQLException {
+    private Superuser CreateStaff(String require_id) {
         Superuser staff = null;
         JDBC jdbc = JDBC.GetJDBC();
         try (Connection conn = jdbc.GetConnection()) {
-            // Staff's attributes: id, name, sex, age, leader_id, position, sales, salary, password
-            try (PreparedStatement prepared_statement =
-                            conn.prepareStatement("SELECT * FROM staff Where id=?")) {
+            // Staff's attributes: id, name, sex, age, leader_id, position, sales, salary,
+            // password
+            try (PreparedStatement prepared_statement = conn.prepareStatement("SELECT * FROM staff Where id=?")) {
                 prepared_statement.setObject(1, require_id);
                 try (ResultSet result_set = prepared_statement.executeQuery()) {
                     while (result_set.next()) {
@@ -31,22 +31,25 @@ public class StaffFactory {
                         double sales = result_set.getDouble("sales");
                         double salary = result_set.getDouble("salary");
                         String password = result_set.getString("password");
-                        staff = new Superuser(name, sex, age, id, leader_id, position, sales, salary,
-                                              password);
+                        staff = new Superuser(name, sex, age, id, leader_id, position, sales, salary, password);
                     }
                 }
             }
+        } catch (SQLException e) {
+            System.err.println("Database connect failed");
         }
         return staff;
     }
 
-    public Employee CreateEmployee(String require_id) throws SQLException {
+    public Employee CreateEmployee(String require_id) {
         return CreateStaff(require_id);
     }
-    public Leader CreateLeader(String require_id) throws SQLException {
+
+    public Leader CreateLeader(String require_id) {
         return CreateStaff(require_id);
     }
-    public Superuser CreateSuperuser(String require_id) throws SQLException {
+
+    public Superuser CreateSuperuser(String require_id) {
         return CreateStaff(require_id);
     }
 }

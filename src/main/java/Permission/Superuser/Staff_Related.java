@@ -1,3 +1,4 @@
 package Permission.Superuser;
 
-public interface Staff_Related {}
+public interface Staff_Related {
+}

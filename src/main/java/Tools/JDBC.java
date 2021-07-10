@@ -8,8 +8,7 @@ import com.zaxxer.hikari.HikariDataSource;
 
 public class JDBC {
     private DataSource data_source;
-    private static final String JDBC_URL =
-        "jdbc:mysql://localhost:3306/HeadHunterMS";
+    private static final String JDBC_URL = "jdbc:mysql://localhost:3306/HeadHunterMS";
     private static final String JDBC_USER = "jdbc";
     private static final String JDBC_PASSWORD = "jdbcpassword";
     private static final String CONNECTION_TIMEOUT = "2000";
@@ -34,10 +33,10 @@ public class JDBC {
 
     public Connection GetConnection() {
         try {
-            Connection conn =  data_source.getConnection();
+            Connection conn = data_source.getConnection();
             return conn;
         } catch (SQLException e) {
-            System.err.println("SQL connect failed.");
+            System.err.println("Database connect failed.");
         }
         return null;
     }

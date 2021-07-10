@@ -14,8 +14,8 @@ public class Project {
     private double amount;
     private Status status;
 
-    public Project(Company party_a, Company party_b, LocalDate establishment,
-                   LocalDate completion, double amount, Status status) {
+    public Project(Company party_a, Company party_b, LocalDate establishment, LocalDate completion, double amount,
+            Status status) {
         this.party_a = party_a;
         this.party_b = party_b;
         this.date_formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
