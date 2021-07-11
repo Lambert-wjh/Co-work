@@ -8,7 +8,21 @@ import Staff.Superuser;
 import Tools.Enums.Position;
 
 public class Menu {
-    public void EmployeeMenu(Employee employee) {
+    public void Start(Employee user) {
+        switch (user.GetPosition()) {
+            case EMPLOYEE -> {
+                EmployeeMenu(user);
+            }
+            case LEADER -> {
+                LeaderMenu((Leader) user);
+            }
+            case SUPERUSER -> {
+                SuperuserMenu((Superuser) user);
+            }
+        }
+    }
+
+    private void EmployeeMenu(Employee employee) {
         Scanner input = new Scanner(System.in);
         int first_selection = 0;
         int second_selection = 0;
@@ -47,7 +61,7 @@ public class Menu {
         System.out.println("Thank you for using");
     }
 
-    public void LeaderMenu(Leader leader) {
+    private void LeaderMenu(Leader leader) {
         Scanner input = new Scanner(System.in);
         int first_selection = 0;
         int second_selection = 0;
@@ -100,7 +114,7 @@ public class Menu {
         System.out.println("Thank you for using");
     }
 
-    public void SuperuserMenu(Superuser superuser) {
+    private void SuperuserMenu(Superuser superuser) {
         Scanner input = new Scanner(System.in);
         int first_selection = 0;
         int second_selection = 0;
