@@ -12,8 +12,8 @@ import Tools.Enums.Position;
 import Tools.Enums.Sex;
 
 public class StaffFactory {
-    private Superuser CreateStaff(String require_id) {
-        Superuser staff = null;
+    private Employee CreateStaff(String require_id, Position require_position) {
+        Employee staff = null;
         JDBC jdbc = JDBC.GetJDBC();
         try (Connection conn = jdbc.GetConnection()) {
             // Staff's attributes: id, name, sex, age, leader_id, position, sales, salary,
@@ -25,15 +25,20 @@ public class StaffFactory {
                         String id = result_set.getString("id");
                         String name = result_set.getString("name");
                         Sex sex = Sex.valueOf(result_set.getString("sex"));
-                        // Sex sex = (Sex) result_set.getObject("sex");
                         int age = result_set.getInt("age");
                         String leader_id = result_set.getString("leader_id");
                         Position position = Position.valueOf(result_set.getString("position"));
-                        // Position position = (Position) result_set.getObject("position");
                         double sales = result_set.getDouble("sales");
                         double salary = result_set.getDouble("salary");
                         String password = result_set.getString("password");
-                        staff = new Superuser(name, sex, age, id, leader_id, position, sales, salary, password);
+                        switch (require_position) {
+                            case EMPLOYEE -> staff = new Employee(name, sex, age, id, leader_id, position, sales,
+                                    salary, password);
+                            case LEADER -> staff = new Leader(name, sex, age, id, leader_id, position, sales, salary,
+                                    password);
+                            case SUPERUSER -> staff = new Superuser(name, sex, age, id, leader_id, position, sales,
+                                    salary, password);
+                        }
                     }
                 }
             }
@@ -44,14 +49,14 @@ public class StaffFactory {
     }
 
     public Employee CreateEmployee(String require_id) {
-        return CreateStaff(require_id);
+        return CreateStaff(require_id, Position.EMPLOYEE);
     }
 
     public Leader CreateLeader(String require_id) {
-        return CreateStaff(require_id);
+        return (Leader) CreateStaff(require_id, Position.LEADER);
     }
 
     public Superuser CreateSuperuser(String require_id) {
-        return CreateStaff(require_id);
+        return (Superuser) CreateStaff(require_id, Position.SUPERUSER);
     }
 }

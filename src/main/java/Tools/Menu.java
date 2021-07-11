@@ -15,15 +15,11 @@ public class Menu {
 
         do {
             PrintFirstMenu(employee.GetPosition());
-
-            System.out.print("Enter selection: ");
             first_selection = input.nextInt();
             switch (first_selection) {
                 case 1 -> {
                     do {
                         PrintSecondMenu(employee.GetPosition(), first_selection);
-
-                        System.out.print("Enter selection: ");
                         second_selection = input.nextInt();
                         switch (second_selection) {
                             case 1 -> {
@@ -38,8 +34,6 @@ public class Menu {
                 case 2 -> {
                     do {
                         PrintSecondMenu(employee.GetPosition(), first_selection);
-
-                        System.out.print("Enter selection: ");
                         second_selection = input.nextInt();
                         switch (second_selection) {
                             case 1 -> {
@@ -116,12 +110,14 @@ public class Menu {
                 System.out.println("1. Person related");
                 System.out.println("2. Project related");
                 System.out.println("0. Quit");
+                System.out.print("Enter selection: ");
             }
             case LEADER -> {
                 System.out.println("1. Person related");
                 System.out.println("2. Project related");
                 System.out.println("3. Team related");
                 System.out.println("0. Quit");
+                System.out.print("Enter selection: ");
             }
             case SUPERUSER -> {
                 ;
