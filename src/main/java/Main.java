@@ -1,3 +1,4 @@
+import java.io.Console;
 import java.util.Scanner;
 
 import Staff.*;
@@ -16,11 +17,12 @@ public class Main {
 
     public static Superuser Login() {
         Scanner input = new Scanner(System.in);
+        Console console = System.console();
         System.out.println("Welcome to Headhunter Management System");
         System.out.print("Account: ");
         String input_account = input.nextLine();
         System.out.print("Password: ");
-        String input_password = input.nextLine();
+        String input_password = new String(console.readPassword());
         StaffFactory staff_factory = new StaffFactory();
         Superuser user = staff_factory.CreateSuperuser(input_account);
         if (user.GetAccount().Verify(input_password)) {
