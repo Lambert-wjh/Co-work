@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import database.dao.ProjectDAO;
+import entity.enums.Position;
 import entity.enums.Status;
 
 public class Project {
@@ -40,8 +41,8 @@ public class Project {
         return sb.toString();
     }
 
-    public static List<Project> getProjects(String require_id) {
+    public static List<Project> getProjects(String require_id, Position position) {
         ProjectDAO project_dao = new ProjectDAO();
-        return project_dao.createProjects(require_id);
+        return project_dao.createProjects(require_id, position);
     }
 }

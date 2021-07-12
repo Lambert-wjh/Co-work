@@ -54,6 +54,7 @@ public class LeaderMenu {
                 selection = input.nextInt();
                 switch (selection) {
                     case 1 -> {
+                        user.checkProjectInfo();
                     }
                     case 2 -> {
                     }

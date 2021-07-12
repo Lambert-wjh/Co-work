@@ -25,10 +25,6 @@ public class Employee extends Person {
         this.salary = salary;
     }
 
-    public String getID() {
-        return this.id;
-    }
-
     public Position getPosition() {
         return this.position;
     }
@@ -52,7 +48,7 @@ public class Employee extends Person {
     }
 
     public void checkProjectInfo() {
-        List<Project> projects = Project.getProjects(this.getID());
+        List<Project> projects = Project.getProjects(this.id, this.position);
         if (projects.size() != 0) {
             for (Project project : projects) {
                 System.out.println(project);

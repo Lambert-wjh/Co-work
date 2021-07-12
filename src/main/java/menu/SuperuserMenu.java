@@ -66,7 +66,7 @@ public class SuperuserMenu {
             } while (selection != 0);
         } else if (first_selection == 3) {
             do {
-                System.out.println("1. Check project's information");
+                System.out.println("1. Check projects' information");
                 System.out.println("2. Update project's information");
                 System.out.println("3. Create new project");
                 System.out.println("0. Back to previous menu");
@@ -74,6 +74,7 @@ public class SuperuserMenu {
                 selection = input.nextInt();
                 switch (selection) {
                     case 1 -> {
+                        user.checkProjectInfo();
                     }
                     case 2 -> {
                     }

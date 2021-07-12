@@ -13,10 +13,6 @@ public class StaffFactory {
         this.staff_dao = staff_dao;
     }
 
-    public StaffFactory() {
-        this(new StaffDAO());
-    }
-
     private Employee getStaff(String require_id, Position require_position) {
         return this.staff_dao.createStaff(require_id, require_position);
     }

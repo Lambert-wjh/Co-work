@@ -19,6 +19,7 @@ public class Account {
         String formal_password = new String(console.readPassword());
         if (!password.equals(formal_password)) {
             System.err.println("Formal password is not correct");
+            return;
         }
 
         System.out.print("Enter new password: ");
@@ -27,6 +28,7 @@ public class Account {
         String verify_password = new String(console.readPassword());
         if (!new_password.equals(verify_password)) {
             System.err.println("The two passwords do not match");
+            return;
         }
         this.password = new_password;
 
