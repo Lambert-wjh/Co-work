@@ -1,4 +1,4 @@
-package Tools;
+package database;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -8,7 +8,7 @@ import com.zaxxer.hikari.HikariDataSource;
 
 public class JDBC {
     private DataSource data_source;
-    private static final String JDBC_URL = "jdbc:mysql://localhost:3306/HeadHunterMS";
+    private static final String JDBC_URL = "jdbc:mysql://localhost/HeadhunterMS";
     private static final String JDBC_USER = "jdbc";
     private static final String JDBC_PASSWORD = "jdbcpassword";
     private static final String CONNECTION_TIMEOUT = "2000";
@@ -27,17 +27,17 @@ public class JDBC {
         data_source = new HikariDataSource(config);
     }
 
-    public static JDBC GetJDBC() {
+    public static JDBC getJDBC() {
         return INSTANCE;
     }
 
-    public Connection GetConnection() {
+    public Connection getConnection() {
+        Connection connection = null;
         try {
-            Connection conn = data_source.getConnection();
-            return conn;
+            connection = data_source.getConnection();
         } catch (SQLException e) {
-            System.err.println("Database connect failed.");
+            e.printStackTrace();
         }
-        return null;
+        return connection;
     }
 }

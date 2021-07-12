@@ -1,4 +1,4 @@
-package Tools.Enums;
+package entity.enums;
 
 public enum Position {
     EMPLOYEE, LEADER, SUPERUSER;

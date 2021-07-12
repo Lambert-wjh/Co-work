@@ -1,11 +1,8 @@
-import Staff.Employee;
-import Tools.Account;
-import Tools.Menu;
+import menu.MainMenu;
 
 public class Main {
     public static void main(String[] args) {
-        Menu menu = new Menu();
-        Employee user = Account.Login();
-        menu.Start(user);
+        MainMenu menu = new MainMenu();
+        menu.start();
     }
 }
