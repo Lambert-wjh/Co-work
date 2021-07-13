@@ -31,6 +31,7 @@ public class EmployeeMenu {
 
         if (first_selection == 1) {
             do {
+                MainMenu.clearScreen();
                 System.out.println("1. Change password");
                 System.out.println("2. Check personal information");
                 System.out.println("0. Back to previous menu");
@@ -44,9 +45,13 @@ public class EmployeeMenu {
                         user.checkStaffInfo();
                     }
                 }
+                if (selection != 0) {
+                    MainMenu.postSwitch();
+                }
             } while (selection != 0);
         } else if (first_selection == 2) {
             do {
+                MainMenu.clearScreen();
                 System.out.println("1. Check project's information");
                 System.out.println("0. Back to previous menu");
                 System.out.print("Enter selection: ");
@@ -55,6 +60,9 @@ public class EmployeeMenu {
                     case 1 -> {
                         user.checkProjectInfo();
                     }
+                }
+                if (selection != 0) {
+                    MainMenu.postSwitch();
                 }
             } while (selection != 0);
         }

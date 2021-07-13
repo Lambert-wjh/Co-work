@@ -1,6 +1,8 @@
 package menu;
 
 import java.io.Console;
+import java.io.IOException;
+import java.io.Reader;
 import java.util.Scanner;
 import database.dao.StaffDAO;
 import entity.StaffFactory;
@@ -12,6 +14,18 @@ public class MainMenu {
     public static void clearScreen() {
         System.out.print("\033[H\033[2J");
         System.out.flush();
+    }
+
+    public static void postSwitch() {
+        Console console = System.console();
+        Reader reader = console.reader();
+
+        try {
+            System.out.print("Enter any key back to menu...");
+            int single_char = reader.read();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public void start() {

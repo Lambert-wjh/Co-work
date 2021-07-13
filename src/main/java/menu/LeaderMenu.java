@@ -31,6 +31,7 @@ public class LeaderMenu {
 
         if (first_selection == 1) {
             do {
+                MainMenu.clearScreen();
                 System.out.println("1. Change password");
                 System.out.println("2. Check personal information");
                 System.out.println("0. Back to previous menu");
@@ -44,9 +45,13 @@ public class LeaderMenu {
                         user.checkStaffInfo();
                     }
                 }
+                if (selection != 0) {
+                    MainMenu.postSwitch();
+                }
             } while (selection != 0);
         } else if (first_selection == 2) {
             do {
+                MainMenu.clearScreen();
                 System.out.println("1. Check project's information");
                 System.out.println("2. Update project's status");
                 System.out.println("0. Back to previous menu");
@@ -59,9 +64,14 @@ public class LeaderMenu {
                     case 2 -> {
                     }
                 }
+                if (selection != 0) {
+                    MainMenu.postSwitch();
+                }
             } while (selection != 0);
         } else if (first_selection == 3) {
             do {
+                MainMenu.clearScreen();
+                System.out.println("1. Check project's information");
                 System.out.println("1. Check members' information");
                 System.out.println("0. Back to previous menu");
                 System.out.print("Enter selection: ");
@@ -69,6 +79,9 @@ public class LeaderMenu {
                 switch (selection) {
                     case 1 -> {
                     }
+                }
+                if (selection != 0) {
+                    MainMenu.postSwitch();
                 }
             } while (selection != 0);
         }

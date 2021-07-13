@@ -31,6 +31,7 @@ public class SuperuserMenu {
 
         if (first_selection == 1) {
             do {
+                MainMenu.clearScreen();
                 System.out.println("1. Change password");
                 System.out.println("2. Update staff's information");
                 System.out.println("3. Create new staff");
@@ -46,9 +47,13 @@ public class SuperuserMenu {
                     case 3 -> {
                     }
                 }
+                if (selection != 0) {
+                    MainMenu.postSwitch();
+                }
             } while (selection != 0);
         } else if (first_selection == 2) {
             do {
+                MainMenu.clearScreen();
                 System.out.println("1. Create new team");
                 System.out.println("2. Intra-team staff transfer");
                 System.out.println("3. Inter-team staff transfer");
@@ -63,9 +68,13 @@ public class SuperuserMenu {
                     case 3 -> {
                     }
                 }
+                if (selection != 0) {
+                    MainMenu.postSwitch();
+                }
             } while (selection != 0);
         } else if (first_selection == 3) {
             do {
+                MainMenu.clearScreen();
                 System.out.println("1. Check projects' information");
                 System.out.println("2. Check the project's information");
                 System.out.println("3. Update project's information");
@@ -83,6 +92,9 @@ public class SuperuserMenu {
                     }
                     case 4 -> {
                     }
+                }
+                if (selection != 0) {
+                    MainMenu.postSwitch();
                 }
             } while (selection != 0);
         }
