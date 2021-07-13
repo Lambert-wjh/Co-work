@@ -4,7 +4,6 @@ import java.io.Console;
 import java.util.Scanner;
 import database.dao.StaffDAO;
 import entity.StaffFactory;
-import entity.enums.Position;
 import entity.staff.Employee;
 import entity.staff.Leader;
 import entity.staff.Superuser;
@@ -17,6 +16,10 @@ public class MainMenu {
 
     public void start() {
         Employee user = Login();
+        if (user == null) {
+            return;
+        }
+
         switch (user.getPosition()) {
             case EMPLOYEE -> {
                 EmployeeMenu menu = new EmployeeMenu();
@@ -46,19 +49,13 @@ public class MainMenu {
 
         StaffDAO staff_dao = new StaffDAO();
         StaffFactory staff_factory = new StaffFactory(staff_dao);
-        Position position = staff_dao.verifyPassword(input_account, input_password);
-        Employee user = null;
-        switch (position) {
-            case EMPLOYEE -> {
-                user = staff_factory.getEmployee(input_account);
-            }
-            case LEADER -> {
-                user = staff_factory.getLeader(input_account);
-            }
-            case SUPERUSER -> {
-                user = staff_factory.getSuperuser(input_account);
-            }
+        Employee user = staff_factory.getStaff(input_account);
+
+        if (!user.getAccount().verifyPassword(input_password)) {
+            System.err.println("Password is not correct");
+            return null;
         }
+
         return user;
     }
 }

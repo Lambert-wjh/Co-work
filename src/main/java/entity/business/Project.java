@@ -2,6 +2,7 @@ package entity.business;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 import database.dao.ProjectDAO;
 import entity.enums.Position;
@@ -43,6 +44,23 @@ public class Project {
 
     public static List<Project> getProjects(String require_id, Position position) {
         ProjectDAO project_dao = new ProjectDAO();
-        return project_dao.createProjects(require_id, position);
+        String select_clause = null;
+        List<String> parameters = new ArrayList<>();
+
+        switch (position) {
+            case EMPLOYEE -> {
+                select_clause =
+                        "SELECT * FROM Project WHERE leader_id IN (SELECT leader_id FROM Employee WHERE id=?)";
+                parameters.add(require_id);
+            }
+            case LEADER -> {
+                select_clause = "SELECT * FROM Project WHERE leader_id=?";
+                parameters.add(require_id);
+            }
+            case SUPERUSER -> {
+                select_clause = "SELECT * FROM Project";
+            }
+        }
+        return project_dao.createProjects(select_clause, parameters);
     }
 }

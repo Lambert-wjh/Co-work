@@ -1,7 +1,8 @@
 package entity;
 
+import java.util.ArrayList;
+import java.util.List;
 import database.dao.StaffDAO;
-import entity.enums.Position;
 import entity.staff.Employee;
 import entity.staff.Leader;
 import entity.staff.Superuser;
@@ -13,19 +14,22 @@ public class StaffFactory {
         this.staff_dao = staff_dao;
     }
 
-    private Employee getStaff(String require_id, Position require_position) {
-        return this.staff_dao.createStaff(require_id, require_position);
+    public Employee getStaff(String require_id) {
+        String select_clause = "SELECT * FROM Employee WHERE id=?";
+        List<String> parameters = new ArrayList<>();
+        parameters.add(require_id);
+        return this.staff_dao.createStaff(select_clause, parameters).get(0);
     }
 
     public Employee getEmployee(String require_id) {
-        return getStaff(require_id, Position.EMPLOYEE);
+        return getStaff(require_id);
     }
 
     public Leader getLeader(String require_id) {
-        return (Leader) getStaff(require_id, Position.LEADER);
+        return (Leader) getStaff(require_id);
     }
 
     public Superuser getSuperuser(String require_id) {
-        return (Superuser) getStaff(require_id, Position.SUPERUSER);
+        return (Superuser) getStaff(require_id);
     }
 }

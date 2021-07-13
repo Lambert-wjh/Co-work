@@ -67,8 +67,9 @@ public class SuperuserMenu {
         } else if (first_selection == 3) {
             do {
                 System.out.println("1. Check projects' information");
-                System.out.println("2. Update project's information");
-                System.out.println("3. Create new project");
+                System.out.println("2. Check the project's information");
+                System.out.println("3. Update project's information");
+                System.out.println("4. Create new project");
                 System.out.println("0. Back to previous menu");
                 System.out.print("Enter selection: ");
                 selection = input.nextInt();
@@ -79,6 +80,8 @@ public class SuperuserMenu {
                     case 2 -> {
                     }
                     case 3 -> {
+                    }
+                    case 4 -> {
                     }
                 }
             } while (selection != 0);

@@ -29,6 +29,10 @@ public class Employee extends Person {
         return this.position;
     }
 
+    public Account getAccount() {
+        return this.account;
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();

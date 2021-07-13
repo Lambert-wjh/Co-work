@@ -10,33 +10,21 @@ import java.util.List;
 import database.JDBC;
 import entity.business.Company;
 import entity.business.Project;
-import entity.enums.Position;
 import entity.enums.Status;
 
 public class ProjectDAO {
     private JDBC jdbc = JDBC.getJDBC();
 
-    public List<Project> createProjects(String require_id, Position position) {
+    public List<Project> createProjects(String select_clause, List<String> parameters) {
         List<Project> projects = new ArrayList<Project>();
 
         try (Connection connection = jdbc.getConnection()) {
-            String select_clause = null;
-            switch (position) {
-                case EMPLOYEE -> {
-                    select_clause =
-                            "SELECT * FROM Project WHERE (code_a, code_b, start) IN (SELECT code_a, code_b, start FROM Employee JOIN Project USING(leader_id) WHERE id=?)";
+            try (PreparedStatement prepared_statement =
+                    connection.prepareStatement(select_clause)) {
+                for (int i = 0; i < parameters.size(); i++) {
+                    prepared_statement.setObject(i + 1, parameters.get(i));
                 }
-                case LEADER -> {
-                    select_clause = "SELECT * FROM Project WHERE leader_id=?";
-                }
-                case SUPERUSER -> {
-                    select_clause =
-                            "SELECT * FROM Project WHERE leader_id IN (SELECT id FROM Employee WHERE leader_id=?)";
-                }
-            }
-            try (PreparedStatement prepare_statement = connection.prepareStatement(select_clause)) {
-                prepare_statement.setObject(1, require_id);
-                try (ResultSet result_set = prepare_statement.executeQuery()) {
+                try (ResultSet result_set = prepared_statement.executeQuery()) {
                     while (result_set.next()) {
                         String code_a = result_set.getString("code_a");
                         String code_b = result_set.getString("code_b");
@@ -56,6 +44,7 @@ public class ProjectDAO {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+
         return projects;
     }
 }
