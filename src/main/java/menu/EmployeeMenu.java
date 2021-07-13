@@ -14,14 +14,14 @@ public class EmployeeMenu {
 
         do {
             MainMenu.clearScreen();
-            System.out.println("1. 个人相关");
-            System.out.println("2. 项目相关");
-            System.out.println("0. 退出");
-            System.out.print("输入选择: ");
+            System.out.println("1. Personal related operations");
+            System.out.println("2. Project-related operations");
+            System.out.println("0. Exit");
+            System.out.print("Enter selection: ");
             selection = input.nextInt();
             secondMenu(user, selection);
         } while (selection != 0);
-        System.out.println("感谢您的使用");
+        System.out.println("Thank you for using");
 
     }
 
@@ -32,10 +32,10 @@ public class EmployeeMenu {
         if (first_selection == 1) {
             do {
                 MainMenu.clearScreen();
-                System.out.println("1. 修改账户密码");
-                System.out.println("2. 查看个人信息");
-                System.out.println("0. 返回上级菜单");
-                System.out.print("输入选择: ");
+                System.out.println("1. Change account password");
+                System.out.println("2. Check personal information");
+                System.out.println("0. Back to the parent menu");
+                System.out.print("Enter selection: ");
                 selection = input.nextInt();
                 switch (selection) {
                     case 1 -> {
@@ -52,9 +52,9 @@ public class EmployeeMenu {
         } else if (first_selection == 2) {
             do {
                 MainMenu.clearScreen();
-                System.out.println("1. 查看项目信息");
-                System.out.println("0. 返回上级菜单");
-                System.out.print("输入选择: ");
+                System.out.println("1. Check project information");
+                System.out.println("0. Back to the parent menu");
+                System.out.print("Enter selection: ");
                 selection = input.nextInt();
                 switch (selection) {
                     case 1 -> {

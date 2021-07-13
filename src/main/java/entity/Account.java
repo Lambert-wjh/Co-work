@@ -20,19 +20,19 @@ public class Account {
 
     public void setPassword() {
         Console console = System.console();
-        System.out.print("输入原密码: ");
+        System.out.print("Enter original password: ");
         String formal_password = new String(console.readPassword());
         if (!password.equals(formal_password)) {
-            System.err.println("原密码错误");
+            System.err.println("The original password is wrong");
             return;
         }
 
-        System.out.print("输入新密码: ");
+        System.out.print("Enter new password: ");
         String new_password = new String(console.readPassword());
-        System.out.print("再次输入新密码: ");
+        System.out.print("Enter the new password again: ");
         String verify_password = new String(console.readPassword());
         if (!new_password.equals(verify_password)) {
-            System.err.println("两次密码不一致");
+            System.err.println("The two password do not match");
             return;
         }
         this.password = new_password;
@@ -43,7 +43,9 @@ public class Account {
         parameters.add(new_password);
         parameters.add(this.account);
         if (staff_dao.updateStaff(update_clause, parameters) == 0) {
-            System.err.println("修改密码失败");
+            System.err.println("Failed to change password");
+        } else {
+            System.out.println("Change password successfully");
         }
     }
 }

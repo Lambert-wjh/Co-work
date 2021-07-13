@@ -21,7 +21,7 @@ public class MainMenu {
         Reader reader = console.reader();
 
         try {
-            System.out.print("按下任意键返回...");
+            System.out.print("Enter any key to return...");
             int single_char = reader.read();
         } catch (IOException e) {
             e.printStackTrace();
@@ -76,17 +76,17 @@ public class MainMenu {
         Console console = System.console();
 
         MainMenu.clearScreen();
-        System.out.println("欢迎使用猎头公司管理系统");
-        System.out.print("帐号: ");
+        System.out.println("Welcome to use headhunter management system");
+        System.out.print("Account: ");
         String input_account = input.nextLine();
-        System.out.print("密码: ");
+        System.out.print("Password: ");
         String input_password = new String(console.readPassword());
 
         StaffFactory staff_factory = new StaffFactory();
         Employee user = staff_factory.getStaff(input_account);
 
         if (!user.getAccount().verifyPassword(input_password)) {
-            System.err.println("密码错误");
+            System.err.println("The password is wrong");
             return null;
         }
 
