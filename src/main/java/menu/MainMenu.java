@@ -3,8 +3,8 @@ package menu;
 import java.io.Console;
 import java.io.IOException;
 import java.io.Reader;
+import java.util.List;
 import java.util.Scanner;
-import database.dao.StaffDAO;
 import entity.StaffFactory;
 import entity.staff.Employee;
 import entity.staff.Leader;
@@ -26,6 +26,27 @@ public class MainMenu {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public static String formatAsTable(List<List<String>> rows) {
+        int[] max_lengths = new int[rows.get(0).size()];
+        for (List<String> row : rows) {
+            for (int i = 0; i < row.size(); i++) {
+                max_lengths[i] = Math.max(max_lengths[i], row.get(i).length());
+            }
+        }
+
+        StringBuilder formatter = new StringBuilder();
+        for (int max_length : max_lengths) {
+            formatter.append("%-").append(max_length + 2).append("s");
+        }
+
+        StringBuilder table = new StringBuilder();
+        for (List<String> row : rows) {
+            table.append(String.format(formatter.toString(), row.toArray(new Object[0])))
+                    .append("\n");
+        }
+        return table.toString();
     }
 
     public void start() {
@@ -61,8 +82,7 @@ public class MainMenu {
         System.out.print("密码: ");
         String input_password = new String(console.readPassword());
 
-        StaffDAO staff_dao = new StaffDAO();
-        StaffFactory staff_factory = new StaffFactory(staff_dao);
+        StaffFactory staff_factory = new StaffFactory();
         Employee user = staff_factory.getStaff(input_account);
 
         if (!user.getAccount().verifyPassword(input_password)) {

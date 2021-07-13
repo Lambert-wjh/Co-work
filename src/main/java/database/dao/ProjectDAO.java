@@ -31,13 +31,12 @@ public class ProjectDAO {
                         LocalDate start = result_set.getDate("start").toLocalDate();
                         String name_a = result_set.getString("name_a");
                         String name_b = result_set.getString("name_b");
-                        LocalDate end = result_set.getDate("end").toLocalDate();
                         double amount = result_set.getDouble("amount");
                         Status status = Status.valueOf(result_set.getString("status"));
 
                         Company company_a = new Company(code_a, name_a);
                         Company company_b = new Company(code_b, name_b);
-                        projects.add(new Project(company_a, company_b, start, end, amount, status));
+                        projects.add(new Project(company_a, company_b, start, amount, status));
                     }
                 }
             }

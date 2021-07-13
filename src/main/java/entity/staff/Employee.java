@@ -1,10 +1,13 @@
 package entity.staff;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import entity.Account;
 import entity.business.Project;
 import entity.enums.Position;
 import entity.enums.Sex;
+import menu.MainMenu;
 
 public class Employee extends Person {
     protected String id;
@@ -25,22 +28,34 @@ public class Employee extends Person {
         this.salary = salary;
     }
 
-    public Position getPosition() {
-        return this.position;
-    }
-
     public Account getAccount() {
         return this.account;
     }
 
+    public Position getPosition() {
+        return this.position;
+    }
+
+    public double getSales() {
+        return this.sales;
+    }
+
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("工号: ").append(id).append("\n姓名: ").append(name).append("\n性别: ").append(sex)
-                .append("\n年龄: ").append(age).append("\n职位: ").append(position)
-                .append("\n业绩: ").append(sales).append("\n薪资: ").append(salary);
+        List<List<String>> rows = new ArrayList<>();
+        rows.add(Employee.getFieldName());
+        rows.add(this.getFieldValue());
+        return MainMenu.formatAsTable(rows);
+    }
 
-        return sb.toString();
+    public static List<String> getFieldName() {
+        return Arrays.asList("ID", "Name", "Sex", "Age", "Position", "Sales", "Salary");
+    }
+
+    public List<String> getFieldValue() {
+        return Arrays.asList(this.id, this.name, this.sex.name(),
+                Integer.valueOf(this.age).toString(), this.position.name(),
+                Double.valueOf(this.sales).toString(), Double.valueOf(this.salary).toString());
     }
 
     public void changePassword() {
@@ -48,17 +63,21 @@ public class Employee extends Person {
     }
 
     public void checkStaffInfo() {
-        System.out.println(this);
+        System.out.print(this);
     }
 
     public void checkProjectInfo() {
         List<Project> projects = Project.getProjects(this.id, this.position);
+        List<List<String>> rows = new ArrayList<>();
+
+        rows.add(Project.getFieldName());
         if (projects.size() != 0) {
             for (Project project : projects) {
-                System.out.println(project);
+                rows.add(project.getFieldValue());
             }
         } else {
-            System.err.println("您没有接手任何项目");
+            System.err.println("You have not taken over any projects");
         }
+        System.out.print(MainMenu.formatAsTable(rows));
     }
 }

@@ -77,6 +77,7 @@ public class LeaderMenu {
                 selection = input.nextInt();
                 switch (selection) {
                     case 1 -> {
+                        user.checkTeamInfo();
                     }
                 }
                 if (selection != 0) {

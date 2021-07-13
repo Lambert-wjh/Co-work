@@ -9,11 +9,11 @@ public class Company {
         this.name = name;
     }
 
-    @Override
-    public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append(code).append(" ").append(name);
+    public String getCode() {
+        return this.code;
+    }
 
-        return sb.toString();
+    public String getName() {
+        return this.name;
     }
 }

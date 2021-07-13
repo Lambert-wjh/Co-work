@@ -3,42 +3,49 @@ package entity.business;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import database.dao.ProjectDAO;
 import entity.enums.Position;
 import entity.enums.Status;
+import menu.MainMenu;
 
 public class Project {
     private Company company_a;
     private Company company_b;
     private DateTimeFormatter date_formatter;
     private LocalDate start;
-    private LocalDate end;
     private double amount;
     private Status status;
 
-    public Project(Company company_a, Company company_b, LocalDate start, LocalDate end,
-            double amount, Status status) {
+    public Project(Company company_a, Company company_b, LocalDate start, double amount,
+            Status status) {
         this.company_a = company_a;
         this.company_b = company_b;
         this.date_formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         this.start = start;
-        this.end = end;
         this.amount = amount;
         this.status = status;
     }
 
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("甲方: ").append(this.company_a).append("\n乙方: ").append(this.company_b)
-                .append("\n立项日期: ").append(this.date_formatter.format(start));
-        if (status == Status.COMPLETED || status == Status.ARCHIVED) {
-            sb.append("\n结项日期: ").append(this.date_formatter.format(end));
-        }
-        sb.append("\n项目金额: ").append(this.amount).append("\n项目状态: ").append(this.status);
+        List<List<String>> rows = new ArrayList<>();
+        rows.add(Project.getFieldName());
+        rows.add(this.getFieldValue());
+        return MainMenu.formatAsTable(rows);
+    }
 
-        return sb.toString();
+    public static List<String> getFieldName() {
+        return Arrays.asList("Company_A_Code", "Name", "Company_B_Code", "Name", "Start date",
+                "Amount", "Status");
+    }
+
+    public List<String> getFieldValue() {
+        return Arrays.asList(this.company_a.getCode(), this.company_a.getName(),
+                this.company_b.getCode(), this.company_b.getName(),
+                this.date_formatter.format(start).toString(),
+                Double.valueOf(this.amount).toString(), this.status.name());
     }
 
     public static List<Project> getProjects(String require_id, Position position) {
