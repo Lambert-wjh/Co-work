@@ -3,7 +3,7 @@ package entity;
 import java.io.Console;
 import java.util.ArrayList;
 import java.util.List;
-import database.dao.StaffDAO;
+import database.DAO;
 
 public class Account {
     private String account;
@@ -37,12 +37,12 @@ public class Account {
         }
         this.password = new_password;
 
-        StaffDAO staff_dao = new StaffDAO();
+        DAO dao = new DAO();
         String update_clause = "UPDATE Employee SET password=? WHERE id=?";
         List<String> parameters = new ArrayList<>();
         parameters.add(new_password);
         parameters.add(this.account);
-        if (staff_dao.updateStaff(update_clause, parameters) == 0) {
+        if (dao.updateTable(update_clause, parameters) == 0) {
             System.err.println("Failed to change password");
         } else {
             System.out.println("Change password successfully");

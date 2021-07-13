@@ -5,10 +5,8 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import database.dao.ProjectDAO;
-import entity.enums.Position;
+import entity.MethodSet;
 import entity.enums.Status;
-import menu.MainMenu;
 
 public class Project {
     private Company company_a;
@@ -33,7 +31,7 @@ public class Project {
         List<List<String>> rows = new ArrayList<>();
         rows.add(Project.getFieldName());
         rows.add(this.getFieldValue());
-        return MainMenu.formatAsTable(rows);
+        return MethodSet.formatAsTable(rows);
     }
 
     public static List<String> getFieldName() {
@@ -46,27 +44,5 @@ public class Project {
                 this.company_b.getCode(), this.company_b.getName(),
                 this.date_formatter.format(start).toString(),
                 Double.valueOf(this.amount).toString(), this.status.name());
-    }
-
-    public static List<Project> getProjects(String require_id, Position position) {
-        ProjectDAO project_dao = new ProjectDAO();
-        String select_clause = null;
-        List<String> parameters = new ArrayList<>();
-
-        switch (position) {
-            case EMPLOYEE -> {
-                select_clause =
-                        "SELECT * FROM Project WHERE leader_id IN (SELECT leader_id FROM Employee WHERE id=?)";
-                parameters.add(require_id);
-            }
-            case LEADER -> {
-                select_clause = "SELECT * FROM Project WHERE leader_id=?";
-                parameters.add(require_id);
-            }
-            case SUPERUSER -> {
-                select_clause = "SELECT * FROM Project";
-            }
-        }
-        return project_dao.createProjects(select_clause, parameters);
     }
 }

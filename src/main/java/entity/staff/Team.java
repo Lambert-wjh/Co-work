@@ -2,7 +2,7 @@ package entity.staff;
 
 import java.util.ArrayList;
 import java.util.List;
-import menu.MainMenu;
+import entity.MethodSet;
 
 public class Team {
     private Leader leader;
@@ -31,6 +31,6 @@ public class Team {
             rows.add(employee.getFieldValue());
         }
 
-        return (sb.toString() + MainMenu.formatAsTable(rows));
+        return (sb.toString() + MethodSet.formatAsTable(rows));
     }
 }

@@ -1,6 +1,7 @@
 package menu;
 
 import java.util.Scanner;
+import entity.MethodSet;
 import entity.staff.Leader;
 
 public class LeaderMenu {
@@ -13,7 +14,7 @@ public class LeaderMenu {
         int selection = 0;
 
         do {
-            MainMenu.clearScreen();
+            MethodSet.clearScreen();
             System.out.println("1. Personal related operations");
             System.out.println("2. Project-related operations");
             System.out.println("3. Team-related operations");
@@ -31,7 +32,7 @@ public class LeaderMenu {
 
         if (first_selection == 1) {
             do {
-                MainMenu.clearScreen();
+                MethodSet.clearScreen();
                 System.out.println("1. Change account password");
                 System.out.println("2. Check personal information");
                 System.out.println("0. Back to the parent menu");
@@ -46,12 +47,12 @@ public class LeaderMenu {
                     }
                 }
                 if (selection != 0) {
-                    MainMenu.postSwitch();
+                    MethodSet.postSwitch();
                 }
             } while (selection != 0);
         } else if (first_selection == 2) {
             do {
-                MainMenu.clearScreen();
+                MethodSet.clearScreen();
                 System.out.println("1. Check project information");
                 System.out.println("2. Update the project status");
                 System.out.println("0. Back to the parent menu");
@@ -65,12 +66,12 @@ public class LeaderMenu {
                     }
                 }
                 if (selection != 0) {
-                    MainMenu.postSwitch();
+                    MethodSet.postSwitch();
                 }
             } while (selection != 0);
         } else if (first_selection == 3) {
             do {
-                MainMenu.clearScreen();
+                MethodSet.clearScreen();
                 System.out.println("1. Check team information");
                 System.out.println("0. Back to the parent menu");
                 System.out.print("Enter selection: ");
@@ -81,7 +82,7 @@ public class LeaderMenu {
                     }
                 }
                 if (selection != 0) {
-                    MainMenu.postSwitch();
+                    MethodSet.postSwitch();
                 }
             } while (selection != 0);
         }

@@ -1,6 +1,6 @@
 package entity.staff;
 
-import entity.StaffFactory;
+import entity.Factory;
 import entity.enums.Position;
 import entity.enums.Sex;
 
@@ -11,8 +11,8 @@ public class Leader extends Employee {
     }
 
     public void checkTeamInfo() {
-        StaffFactory staff_factory = new StaffFactory();
-        Team team = staff_factory.getTeam(this.id);
+        Factory factory = new Factory();
+        Team team = factory.getTeam(this.id);
 
         System.out.print(team);
     }

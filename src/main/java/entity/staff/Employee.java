@@ -4,10 +4,11 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import entity.Account;
+import entity.Factory;
+import entity.MethodSet;
 import entity.business.Project;
 import entity.enums.Position;
 import entity.enums.Sex;
-import menu.MainMenu;
 
 public class Employee extends Person {
     protected String id;
@@ -45,7 +46,7 @@ public class Employee extends Person {
         List<List<String>> rows = new ArrayList<>();
         rows.add(Employee.getFieldName());
         rows.add(this.getFieldValue());
-        return MainMenu.formatAsTable(rows);
+        return MethodSet.formatAsTable(rows);
     }
 
     public static List<String> getFieldName() {
@@ -67,7 +68,8 @@ public class Employee extends Person {
     }
 
     public void checkProjectInfo() {
-        List<Project> projects = Project.getProjects(this.id, this.position);
+        Factory factory = new Factory();
+        List<Project> projects = factory.getProjects(this.id, this.position);
         List<List<String>> rows = new ArrayList<>();
 
         rows.add(Project.getFieldName());
@@ -78,6 +80,6 @@ public class Employee extends Person {
         } else {
             System.err.println("You have not taken over any projects");
         }
-        System.out.print(MainMenu.formatAsTable(rows));
+        System.out.print(MethodSet.formatAsTable(rows));
     }
 }
