@@ -36,9 +36,9 @@ public class Employee extends Person {
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        sb.append("ID: ").append(id).append("\nName: ").append(name).append("\nSex: ").append(sex)
-                .append("\nAge: ").append(age).append("\nPosition: ").append(position)
-                .append("\nSales: ").append(sales).append("\nSalary: ").append(salary);
+        sb.append("工号: ").append(id).append("\n姓名: ").append(name).append("\n性别: ").append(sex)
+                .append("\n年龄: ").append(age).append("\n职位: ").append(position)
+                .append("\n业绩: ").append(sales).append("\n薪资: ").append(salary);
 
         return sb.toString();
     }
@@ -58,7 +58,7 @@ public class Employee extends Person {
                 System.out.println(project);
             }
         } else {
-            System.err.println("You have not taken over any project yet");
+            System.err.println("您没有接手任何项目");
         }
     }
 }

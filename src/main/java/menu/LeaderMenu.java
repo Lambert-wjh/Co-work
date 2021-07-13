@@ -14,15 +14,15 @@ public class LeaderMenu {
 
         do {
             MainMenu.clearScreen();
-            System.out.println("1. Person related");
-            System.out.println("2. Project related");
-            System.out.println("3. Team related");
-            System.out.println("0. Quit");
-            System.out.print("Enter selection: ");
+            System.out.println("1. 个人相关");
+            System.out.println("2. 项目相关");
+            System.out.println("3. 团队相关");
+            System.out.println("0. 退出");
+            System.out.print("输入选择: ");
             selection = input.nextInt();
             secondMenu(user, selection);
         } while (selection != 0);
-        System.out.println("Thank you for using");
+        System.out.println("感谢您的使用");
     }
 
     private void secondMenu(Leader user, int first_selection) {
@@ -32,10 +32,10 @@ public class LeaderMenu {
         if (first_selection == 1) {
             do {
                 MainMenu.clearScreen();
-                System.out.println("1. Change password");
-                System.out.println("2. Check personal information");
-                System.out.println("0. Back to previous menu");
-                System.out.print("Enter selection: ");
+                System.out.println("1. 修改账户密码");
+                System.out.println("2. 查看个人信息");
+                System.out.println("0. 返回上级菜单");
+                System.out.print("输入选择: ");
                 selection = input.nextInt();
                 switch (selection) {
                     case 1 -> {
@@ -52,10 +52,10 @@ public class LeaderMenu {
         } else if (first_selection == 2) {
             do {
                 MainMenu.clearScreen();
-                System.out.println("1. Check project's information");
-                System.out.println("2. Update project's status");
-                System.out.println("0. Back to previous menu");
-                System.out.print("Enter selection: ");
+                System.out.println("1. 查看项目信息");
+                System.out.println("2. 更新项目状态");
+                System.out.println("0. 返回上级菜单");
+                System.out.print("输入选择: ");
                 selection = input.nextInt();
                 switch (selection) {
                     case 1 -> {
@@ -71,10 +71,9 @@ public class LeaderMenu {
         } else if (first_selection == 3) {
             do {
                 MainMenu.clearScreen();
-                System.out.println("1. Check project's information");
-                System.out.println("1. Check members' information");
-                System.out.println("0. Back to previous menu");
-                System.out.print("Enter selection: ");
+                System.out.println("1. 查看团队信息");
+                System.out.println("0. 返回上级菜单");
+                System.out.print("输入选择: ");
                 selection = input.nextInt();
                 switch (selection) {
                     case 1 -> {

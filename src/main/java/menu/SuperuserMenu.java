@@ -14,15 +14,15 @@ public class SuperuserMenu {
 
         do {
             MainMenu.clearScreen();
-            System.out.println("1. Staff management");
-            System.out.println("2. Team management");
-            System.out.println("3. Project management");
-            System.out.println("0. Quit");
-            System.out.print("Enter selection: ");
+            System.out.println("1. 人员管理");
+            System.out.println("2. 团队管理");
+            System.out.println("3. 项目管理");
+            System.out.println("0. 退出");
+            System.out.print("输入选择: ");
             selection = input.nextInt();
             secondMenu(user, selection);
         } while (selection != 0);
-        System.out.println("Thank you for using");
+        System.out.println("感谢您的使用");
     }
 
     private void secondMenu(Superuser user, int first_selection) {
@@ -32,11 +32,11 @@ public class SuperuserMenu {
         if (first_selection == 1) {
             do {
                 MainMenu.clearScreen();
-                System.out.println("1. Change password");
-                System.out.println("2. Update staff's information");
-                System.out.println("3. Create new staff");
-                System.out.println("0. Back to previous menu");
-                System.out.print("Enter selection: ");
+                System.out.println("1. 修改账户密码");
+                System.out.println("2. 更新员工信息");
+                System.out.println("3. 新建员工信息");
+                System.out.println("0. 返回上级菜单");
+                System.out.print("输入选择: ");
                 selection = input.nextInt();
                 switch (selection) {
                     case 1 -> {
@@ -54,11 +54,11 @@ public class SuperuserMenu {
         } else if (first_selection == 2) {
             do {
                 MainMenu.clearScreen();
-                System.out.println("1. Create new team");
-                System.out.println("2. Intra-team staff transfer");
-                System.out.println("3. Inter-team staff transfer");
-                System.out.println("0. Back to previous menu");
-                System.out.print("Enter selection: ");
+                System.out.println("1. 新建团队");
+                System.out.println("2. 团队内人员调动");
+                System.out.println("3. 团队间人员调动");
+                System.out.println("0. 返回上级菜单");
+                System.out.print("输入选择: ");
                 selection = input.nextInt();
                 switch (selection) {
                     case 1 -> {
@@ -75,22 +75,25 @@ public class SuperuserMenu {
         } else if (first_selection == 3) {
             do {
                 MainMenu.clearScreen();
-                System.out.println("1. Check projects' information");
-                System.out.println("2. Check the project's information");
-                System.out.println("3. Update project's information");
-                System.out.println("4. Create new project");
-                System.out.println("0. Back to previous menu");
-                System.out.print("Enter selection: ");
+                System.out.println("1. 新建项目");
+                System.out.println("2. 查看所有项目信息");
+                System.out.println("3. 查看指定项目信息");
+                System.out.println("4. 更新指定项目信息");
+                System.out.println("5. 更新指定项目状态");
+                System.out.println("0. 返回上级菜单");
+                System.out.print("输入选择: ");
                 selection = input.nextInt();
                 switch (selection) {
                     case 1 -> {
-                        user.checkProjectInfo();
                     }
                     case 2 -> {
+                        user.checkProjectInfo();
                     }
                     case 3 -> {
                     }
                     case 4 -> {
+                    }
+                    case 5 -> {
                     }
                 }
                 if (selection != 0) {

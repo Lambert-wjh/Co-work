@@ -31,13 +31,12 @@ public class Project {
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        sb.append("Company A: ").append(this.company_a).append("\nCompany B: ")
-                .append(this.company_b).append("\nEstablishment date: ")
-                .append(this.date_formatter.format(start));
+        sb.append("甲方: ").append(this.company_a).append("\n乙方: ").append(this.company_b)
+                .append("\n立项日期: ").append(this.date_formatter.format(start));
         if (status == Status.COMPLETED || status == Status.ARCHIVED) {
-            sb.append("\nCompletion date: ").append(this.date_formatter.format(end));
+            sb.append("\n结项日期: ").append(this.date_formatter.format(end));
         }
-        sb.append("\nAmount: ").append(this.amount).append("\nStatus: ").append(this.status);
+        sb.append("\n项目金额: ").append(this.amount).append("\n项目状态: ").append(this.status);
 
         return sb.toString();
     }

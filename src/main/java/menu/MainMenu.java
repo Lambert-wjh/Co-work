@@ -21,7 +21,7 @@ public class MainMenu {
         Reader reader = console.reader();
 
         try {
-            System.out.print("Enter any key back to menu...");
+            System.out.print("按下任意键返回...");
             int single_char = reader.read();
         } catch (IOException e) {
             e.printStackTrace();
@@ -55,10 +55,10 @@ public class MainMenu {
         Console console = System.console();
 
         MainMenu.clearScreen();
-        System.out.println("Welcome to Headhunter Management System");
-        System.out.print("Account: ");
+        System.out.println("欢迎使用猎头公司管理系统");
+        System.out.print("帐号: ");
         String input_account = input.nextLine();
-        System.out.print("Password: ");
+        System.out.print("密码: ");
         String input_password = new String(console.readPassword());
 
         StaffDAO staff_dao = new StaffDAO();
@@ -66,7 +66,7 @@ public class MainMenu {
         Employee user = staff_factory.getStaff(input_account);
 
         if (!user.getAccount().verifyPassword(input_password)) {
-            System.err.println("Password is not correct");
+            System.err.println("密码错误");
             return null;
         }
 

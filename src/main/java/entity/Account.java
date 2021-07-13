@@ -1,7 +1,6 @@
 package entity;
 
 import java.io.Console;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import database.dao.StaffDAO;
@@ -21,19 +20,19 @@ public class Account {
 
     public void setPassword() {
         Console console = System.console();
-        System.out.print("Enter formal password: ");
+        System.out.print("输入原密码: ");
         String formal_password = new String(console.readPassword());
         if (!password.equals(formal_password)) {
-            System.err.println("Formal password is not correct");
+            System.err.println("原密码错误");
             return;
         }
 
-        System.out.print("Enter new password: ");
+        System.out.print("输入新密码: ");
         String new_password = new String(console.readPassword());
-        System.out.print("Enter new password again: ");
+        System.out.print("再次输入新密码: ");
         String verify_password = new String(console.readPassword());
         if (!new_password.equals(verify_password)) {
-            System.err.println("The two passwords do not match");
+            System.err.println("两次密码不一致");
             return;
         }
         this.password = new_password;
@@ -44,7 +43,7 @@ public class Account {
         parameters.add(new_password);
         parameters.add(this.account);
         if (staff_dao.updateStaff(update_clause, parameters) == 0) {
-            System.err.println("Update password failed");
+            System.err.println("修改密码失败");
         }
     }
 }
