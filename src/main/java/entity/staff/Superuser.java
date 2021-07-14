@@ -40,6 +40,7 @@ public class Superuser extends Leader {
                 "You can change it to 1. COMPLETED or 2. PAUSED or 3. IN_PROGRESS or 4. ARCHIVED or 5. REVOKED");
         System.out.print("Now enter your selection: ");
         int selection = input.nextInt();
+
         String update_clause =
                 "UPDATE Project SET status=? WHERE code_a=? AND code_b=? AND start=?";
         List<String> parameters = new ArrayList<>();
@@ -67,8 +68,119 @@ public class Superuser extends Leader {
         parameters.add(code_a);
         parameters.add(code_b);
         parameters.add(start);
+
         DAO dao = new DAO();
         dao.updateTable(update_clause, parameters);
         System.out.println("The project status was modified successfully");
+    }
+
+    public void modifyStaffInfo() {
+        Scanner input = new Scanner(System.in);
+        System.out.print("Enter staff's ID: ");
+        String id = input.nextLine();
+
+        Factory factory = new Factory();
+        Employee staff = factory.getStaff(id);
+        if (staff == null) {
+            return;
+        } else {
+            System.out.println("The staff's information is as follows");
+            System.out.println(staff);
+        }
+
+        String update_clause =
+                "UPDATE Employee SET id=?, name=?, sex=?, age=?, password=? WHERE id=?";
+        List<String> parameters = new ArrayList<>();
+        String temp_input = null;
+        String new_id = staff.getId();
+        String new_name = staff.getName();
+        Sex new_sex = staff.getSex();
+        int new_age = staff.getAge();
+        String new_password = staff.getAccount().getPassword();
+
+        System.out.print("Enter new ID (Please enter N if you don't want to change it) : ");
+        temp_input = input.next();
+        new_id = temp_input.equals("N") ? new_id : temp_input;
+        System.out.print("Enter new name (Please enter N if you don't want to change it) : ");
+        temp_input = input.next();
+        new_name = temp_input.equals("N") ? new_name : temp_input;
+        System.out.print(
+                "Enter new sex (MALE or FEMALE) (Please enter N if you don't want to change it) : ");
+        temp_input = input.next();
+        new_sex = temp_input.equals("N") ? new_sex : Sex.valueOf(temp_input);
+        System.out.print(
+                "Enter new age (18 ~ 65) (Please enter N if you don't want to change it) : ");
+        temp_input = input.next();
+        new_age = temp_input.equals("N") ? new_age : Integer.parseInt(temp_input);
+        System.out.print("Reset password ? (Y or N) : ");
+        temp_input = input.next();
+        new_password = temp_input.equals("N") ? new_password : "123456";
+
+        parameters.add(new_id);
+        parameters.add(new_name);
+        parameters.add(new_sex.name());
+        parameters.add(Integer.valueOf(new_age).toString());
+        parameters.add(new_password);
+        parameters.add(staff.getId());
+
+        DAO dao = new DAO();
+        dao.updateTable(update_clause, parameters);
+        System.out.println("Modified the staff information successfully");
+    }
+
+    public void createNewStaff() {
+        Scanner input = new Scanner(System.in);
+        System.out.print("Enter staff's ID: ");
+        String id = input.nextLine();
+        System.out.print("Enter staff's name: ");
+        String name = input.nextLine();
+        System.out.print("Enter staff's sex (MALE or FEMALE): ");
+        Sex sex = Sex.valueOf(input.nextLine());
+        System.out.print("Enter staff's age (18 ~ 65) : ");
+        int age = input.nextInt();
+
+        String update_clause = "INSERT INTO Employee (id, name, sex, age) VALUES (?, ?, ?, ?)";
+        List<String> parameters = new ArrayList<>();
+        parameters.add(id);
+        parameters.add(name);
+        parameters.add(sex.name());
+        parameters.add(Integer.valueOf(age).toString());
+
+        DAO dao = new DAO();
+        dao.updateTable(update_clause, parameters);
+        System.out.println("Create new staff successfully, the staff's information is as follows");
+
+        Factory factory = new Factory();
+        Employee staff = factory.getStaff(id);
+        System.out.println(staff);
+    }
+
+    public void deleteStaffRecord() {
+        Scanner input = new Scanner(System.in);
+        System.out.print("Enter staff's ID: ");
+        String id = input.nextLine();
+
+        Factory factory = new Factory();
+        Employee staff = factory.getStaff(id);
+        if (staff == null) {
+            return;
+        } else {
+            System.out.println("The staff's information is as follows");
+            System.out.println(staff);
+        }
+
+        System.out.print("Confirm deletion (Y or N) : ");
+        String deletion = input.nextLine();
+        if (deletion.equals("Y")) {
+            String update_clause = "DELETE FROM Employee WHERE id=?";
+            List<String> parameters = new ArrayList<>();
+            parameters.add(id);
+
+            DAO dao = new DAO();
+            dao.updateTable(update_clause, parameters);
+            System.out.println("Delete staff's record successfully");
+        } else {
+            System.out.println("You have cancelled the deletion");
+        }
     }
 }

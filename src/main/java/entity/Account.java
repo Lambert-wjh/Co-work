@@ -14,6 +14,10 @@ public class Account {
         this.password = password;
     }
 
+    public String getPassword() {
+        return this.password;
+    }
+
     public boolean verifyPassword(String input_password) {
         return this.password.equals(input_password);
     }
@@ -37,11 +41,12 @@ public class Account {
         }
         this.password = new_password;
 
-        DAO dao = new DAO();
         String update_clause = "UPDATE Employee SET password=? WHERE id=?";
         List<String> parameters = new ArrayList<>();
         parameters.add(new_password);
         parameters.add(this.account);
+
+        DAO dao = new DAO();
         if (dao.updateTable(update_clause, parameters) == 0) {
             System.err.println("Failed to change password");
         } else {

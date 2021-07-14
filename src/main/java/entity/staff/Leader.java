@@ -45,6 +45,7 @@ public class Leader extends Employee {
         System.out.print(
                 "You can change it to 1. COMPLETED or 2. PAUSED or 3. IN_PROGRESS. Now enter your selection: ");
         int selection = input.nextInt();
+
         String update_clause =
                 "UPDATE Project SET status=? WHERE code_a=? AND code_b=? AND start=?";
         List<String> parameters = new ArrayList<>();
@@ -66,6 +67,7 @@ public class Leader extends Employee {
         parameters.add(code_a);
         parameters.add(code_b);
         parameters.add(start);
+
         DAO dao = new DAO();
         dao.updateTable(update_clause, parameters);
         System.out.println("The project status was modified successfully");

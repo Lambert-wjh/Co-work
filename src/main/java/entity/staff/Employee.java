@@ -29,6 +29,10 @@ public class Employee extends Person {
         this.salary = salary;
     }
 
+    public String getId() {
+        return id;
+    }
+
     public Account getAccount() {
         return this.account;
     }

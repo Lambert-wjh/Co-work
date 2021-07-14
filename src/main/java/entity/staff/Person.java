@@ -12,4 +12,16 @@ public class Person {
         this.sex = sex;
         this.age = age;
     }
+
+    public String getName() {
+        return name;
+    }
+
+    public Sex getSex() {
+        return sex;
+    }
+
+    public int getAge() {
+        return age;
+    }
 }

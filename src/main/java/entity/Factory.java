@@ -34,7 +34,13 @@ public class Factory {
         String select_clause = "SELECT * FROM Employee WHERE id=?";
         List<String> parameters = new ArrayList<>();
         parameters.add(require_id);
-        return this.dao.createStaff(select_clause, parameters).get(0);
+        List<Employee> staff = this.dao.createStaff(select_clause, parameters);
+
+        if (staff.size() == 0) {
+            System.err.println("No such staff");
+            return null;
+        }
+        return staff.get(0);
     }
 
     public Team getTeam(String require_leader_id) {

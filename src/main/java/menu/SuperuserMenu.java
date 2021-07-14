@@ -34,10 +34,10 @@ public class SuperuserMenu {
             do {
                 MethodSet.clearScreen();
                 System.out.println("1. Change account password");
-                System.out.println("2. Update staff information");
-                System.out.println("2. Update all staff sales");
-                System.out.println("3. Create new staff");
-                System.out.println("4. Delete staff record");
+                System.out.println("2. Modify staff information");
+                System.out.println("3. Update all staff sales");
+                System.out.println("4. Create new staff");
+                System.out.println("5. Delete staff record");
                 System.out.println("0. Back to the parent menu");
                 System.out.print("Enter selection: ");
                 selection = input.nextInt();
@@ -46,12 +46,15 @@ public class SuperuserMenu {
                         user.changePassword();
                     }
                     case 2 -> {
+                        user.modifyStaffInfo();
                     }
                     case 3 -> {
                     }
                     case 4 -> {
+                        user.createNewStaff();
                     }
                     case 5 -> {
+                        user.deleteStaffRecord();
                     }
                 }
                 if (selection != 0) {
@@ -62,9 +65,9 @@ public class SuperuserMenu {
             do {
                 MethodSet.clearScreen();
                 System.out.println("1. Create new team");
-                System.out.println("2. Transfer of staff within the team");
-                System.out.println("3. Transfer of staff between two team");
-                System.out.println("1. Eliminate a team");
+                System.out.println("2. Change position in the team");
+                System.out.println("3. Transfer of staff in the team");
+                System.out.println("4. Delete a team record");
                 System.out.println("0. Back to the parent menu");
                 System.out.print("Enter selection: ");
                 selection = input.nextInt();
