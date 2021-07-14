@@ -28,6 +28,7 @@ public class Factory {
         String select_clause = "SELECT * FROM Employee WHERE id=?";
         List<String> parameters = new ArrayList<>();
         parameters.add(require_id);
+
         List<Employee> staff = DAO.getDAO().createStaff(select_clause, parameters);
 
         if (staff.size() == 0) {
@@ -38,12 +39,13 @@ public class Factory {
     }
 
     public Team getTeam(String require_leader_id) {
+        Leader leader = this.getLeader(require_leader_id);
         String select_clause = "SELECT * FROM Employee WHERE leader_id=?";
         List<String> parameters = new ArrayList<>();
         parameters.add(require_leader_id);
 
-        Leader leader = this.getLeader(require_leader_id);
         List<Employee> employees = DAO.getDAO().createStaff(select_clause, parameters);
+
         int member_count = employees.size() + 1;
         double sales_total = leader.getSales();
         for (Employee employee : employees) {
@@ -53,11 +55,9 @@ public class Factory {
         return new Team(leader, employees, member_count, sales_total);
     }
 
-
     public List<Project> getProjects(String require_id, Position position) {
         String select_clause = null;
         List<String> parameters = new ArrayList<>();
-
         switch (position) {
             case EMPLOYEE -> {
                 select_clause =
@@ -72,6 +72,7 @@ public class Factory {
                 select_clause = "SELECT * FROM Project";
             }
         }
+
         return DAO.getDAO().createProjects(select_clause, parameters);
     }
 
@@ -79,7 +80,6 @@ public class Factory {
             String require_id, Position position) {
         String select_clause = null;
         List<String> parameters = new ArrayList<>();
-
         switch (position) {
             case EMPLOYEE -> {
             }
@@ -98,6 +98,7 @@ public class Factory {
                 parameters.add(Project.getDateFormatter().format(start));
             }
         }
+
         return DAO.getDAO().createProjects(select_clause, parameters);
     }
 }
