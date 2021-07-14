@@ -9,21 +9,36 @@ import entity.MethodSet;
 import entity.enums.Status;
 
 public class Project {
-    private Company company_a;
-    private Company company_b;
+    private String code_a;
+    private String code_b;
     private DateTimeFormatter date_formatter;
     private LocalDate start;
     private double amount;
     private Status status;
 
-    public Project(Company company_a, Company company_b, LocalDate start, double amount,
-            Status status) {
-        this.company_a = company_a;
-        this.company_b = company_b;
+    public Project(String code_a, String code_b, LocalDate start, double amount, Status status) {
+        this.code_a = code_a;
+        this.code_b = code_b;
         this.date_formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         this.start = start;
         this.amount = amount;
         this.status = status;
+    }
+
+    public String getCodeA() {
+        return this.code_a;
+    }
+
+    public String getCodeB() {
+        return this.code_b;
+    }
+
+    public LocalDate getStartDate() {
+        return this.start;
+    }
+
+    public double getAmount() {
+        return this.amount;
     }
 
     public Status getStatus() {
@@ -39,8 +54,7 @@ public class Project {
     }
 
     public static List<String> getFieldName() {
-        return Arrays.asList("Company_A_Code", "Name", "Company_B_Code", "Name", "Start date",
-                "Amount", "Status");
+        return Arrays.asList("Company_A_Code", "Company_B_Code", "Start date", "Amount", "Status");
     }
 
     public static DateTimeFormatter getDateFormatter() {
@@ -48,9 +62,7 @@ public class Project {
     }
 
     public List<String> getFieldValue() {
-        return Arrays.asList(this.company_a.getCode(), this.company_a.getName(),
-                this.company_b.getCode(), this.company_b.getName(),
-                this.date_formatter.format(start).toString(),
+        return Arrays.asList(this.code_a, this.code_b, this.date_formatter.format(start).toString(),
                 Double.valueOf(this.amount).toString(), this.status.name());
     }
 }

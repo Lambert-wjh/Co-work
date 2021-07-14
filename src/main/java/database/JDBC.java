@@ -33,11 +33,13 @@ public class JDBC {
 
     public Connection getConnection() {
         Connection connection = null;
+
         try {
             connection = data_source.getConnection();
         } catch (SQLException e) {
             e.printStackTrace();
         }
+
         return connection;
     }
 }

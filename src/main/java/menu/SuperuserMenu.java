@@ -109,6 +109,7 @@ public class SuperuserMenu {
                         user.checkSpecifiedProjectInfo();
                     }
                     case 5 -> {
+                        user.updateSpecifiedProjectInfo();
                     }
                     case 6 -> {
                         user.updateProjectStatus();

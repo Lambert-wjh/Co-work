@@ -127,7 +127,7 @@ public class Superuser extends Leader {
     public void checkSpecifiedProjectInfo() {
         Scanner input = new Scanner(System.in);
         System.out.println(
-                "Enter company A's, company B's code and start date of the project in order: ");
+                "Enter company A's, company B's code and start date (yyyy-MM-dd) of the project in order: ");
         String code_a = input.next();
         String code_b = input.next();
         String start = input.next();
@@ -141,14 +141,74 @@ public class Superuser extends Leader {
             return;
         }
         Project project = projects.get(0);
+        System.out.println("The project's information is as follows");
         System.out.println(project);
+    }
+
+    public void updateSpecifiedProjectInfo() {
+        Scanner input = new Scanner(System.in);
+        System.out.println(
+                "Enter company A's, company B's code and start date (yyyy-MM-dd) of the project in order: ");
+        String code_a = input.next();
+        String code_b = input.next();
+        String start = input.next();
+
+        Factory factory = new Factory();
+        List<Project> projects = factory.getProjects(code_a, code_b,
+                LocalDate.parse(start, Project.getDateFormatter()), this.id, this.position);
+
+        if (projects.size() == 0) {
+            System.err.println("No such project");
+            return;
+        }
+        Project project = projects.get(0);
+        System.out.println("The project's information is as follows");
+        System.out.println(project);
+
+        String temp_input = null;
+        String new_code_a = project.getCodeA();
+        String new_code_b = project.getCodeB();
+        LocalDate new_start = project.getStartDate();
+        double new_amount = project.getAmount();
+
+        System.out.print(
+                "Enter new company A's code (Please enter N if you don't want to change it) : ");
+        input.nextLine();
+        temp_input = input.nextLine();
+        new_code_a = temp_input.equals("N") ? new_code_a : temp_input;
+        System.out.print(
+                "Enter new company B's code (Please enter N if you don't want to change it) : ");
+        temp_input = input.nextLine();
+        new_code_b = temp_input.equals("N") ? new_code_b : temp_input;
+        System.out.print(
+                "Enter new start date (yyyy-MM-dd) (Please enter N if you don't want to change it) : ");
+        temp_input = input.nextLine();
+        new_start = temp_input.equals("N") ? new_start
+                : LocalDate.parse(temp_input, Project.getDateFormatter());
+        System.out.print("Enter new amount (Please enter N if you don't want to change it) : ");
+        temp_input = input.nextLine();
+        new_amount = temp_input.equals("N") ? new_amount : Double.parseDouble(temp_input);
+
+        String update_clause =
+                "UPDATE Project SET code_a=?, code_b=?, start=?, amount=? WHERE code_a=? AND code_b=? AND start=?";
+        List<String> parameters = new ArrayList<>();
+        parameters.add(new_code_a);
+        parameters.add(new_code_b);
+        parameters.add(Project.getDateFormatter().format(new_start));
+        parameters.add(Double.valueOf(new_amount).toString());
+        parameters.add(project.getCodeA());
+        parameters.add(project.getCodeB());
+        parameters.add(Project.getDateFormatter().format(project.getStartDate()));
+
+        DAO.getDAO().updateTable(update_clause, parameters);
+        System.out.println("Update specified project's information successfully");
     }
 
     @Override
     public void updateProjectStatus() {
         Scanner input = new Scanner(System.in);
         System.out.println(
-                "Enter company A's, company B's code and start date of the project in order: ");
+                "Enter company A's, company B's code and start date (yyyy-MM-dd) of the project in order: ");
         String code_a = input.next();
         String code_b = input.next();
         String start = input.next();
