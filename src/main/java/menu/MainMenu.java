@@ -1,3 +1,7 @@
+/*
+ * This file is part of the menu in the HeadhunterMS project. It provides function to the login menu
+ * and access to the menu for employees as three different positions.
+ */
 package menu;
 
 import java.io.Console;
@@ -9,6 +13,18 @@ import entity.staff.Leader;
 import entity.staff.Superuser;
 
 public class MainMenu {
+    /*
+     * Start all menus from here. Login and then access to the corresponding menu for different
+     * positions of employees.
+     *
+     * @EMPLOYEE -> EmployeeMenu
+     *
+     * @LEADER -> LeaderMenu
+     *
+     * @SUPERUSER -> SuperuserMenu
+     *
+     * @return void
+     */
     public void start() {
         Employee user = Login();
         if (user == null) {
@@ -31,6 +47,11 @@ public class MainMenu {
         }
     }
 
+    /*
+     * The login menu
+     *
+     * @return an Employee of the corresponding account in the Database.
+     */
     private Employee Login() {
         Scanner input = new Scanner(System.in);
         Console console = System.console();
