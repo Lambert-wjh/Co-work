@@ -127,7 +127,7 @@ public class Superuser extends Leader {
     public void checkSpecifiedProjectInfo() {
         Scanner input = new Scanner(System.in);
         System.out.println(
-                "Enter company A's, company B's code and start date of the project in order: ");
+                "Enter company A's, company B's code and start date (yyyy-MM-dd) of the project in order: ");
         String code_a = input.next();
         String code_b = input.next();
         String start = input.next();
