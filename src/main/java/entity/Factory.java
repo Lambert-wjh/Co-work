@@ -1,5 +1,6 @@
 package entity;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import database.DAO;
@@ -69,6 +70,32 @@ public class Factory {
             }
             case SUPERUSER -> {
                 select_clause = "SELECT * FROM Project";
+            }
+        }
+        return this.dao.createProjects(select_clause, parameters);
+    }
+
+    public List<Project> getProjects(String code_a, String code_b, LocalDate start,
+            String require_id, Position position) {
+        String select_clause = null;
+        List<String> parameters = new ArrayList<>();
+
+        switch (position) {
+            case EMPLOYEE -> {
+            }
+            case LEADER -> {
+                select_clause =
+                        "SELECT * FROM Project WHERE leader_id=? AND code_a=? AND code_b=? AND start=? AND status!='COMPLETED' AND status!='ARCHIVED' AND status!='REVOKED'";
+                parameters.add(require_id);
+                parameters.add(code_a);
+                parameters.add(code_b);
+                parameters.add(Project.getDateFormatter().format(start));
+            }
+            case SUPERUSER -> {
+                select_clause = "SELECT * FROM Project WHERE code_a=? AND code_b=? AND start=?";
+                parameters.add(code_a);
+                parameters.add(code_b);
+                parameters.add(Project.getDateFormatter().format(start));
             }
         }
         return this.dao.createProjects(select_clause, parameters);

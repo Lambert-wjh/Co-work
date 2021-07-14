@@ -72,13 +72,14 @@ public class Employee extends Person {
         List<Project> projects = factory.getProjects(this.id, this.position);
         List<List<String>> rows = new ArrayList<>();
 
-        rows.add(Project.getFieldName());
-        if (projects.size() != 0) {
-            for (Project project : projects) {
-                rows.add(project.getFieldValue());
-            }
-        } else {
+        if (projects.size() == 0) {
             System.err.println("You have not taken over any projects");
+            return;
+        }
+
+        rows.add(Project.getFieldName());
+        for (Project project : projects) {
+            rows.add(project.getFieldValue());
         }
         System.out.print(MethodSet.formatAsTable(rows));
     }

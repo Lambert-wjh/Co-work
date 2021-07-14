@@ -26,6 +26,10 @@ public class Project {
         this.status = status;
     }
 
+    public Status getStatus() {
+        return this.status;
+    }
+
     @Override
     public String toString() {
         List<List<String>> rows = new ArrayList<>();
@@ -37,6 +41,10 @@ public class Project {
     public static List<String> getFieldName() {
         return Arrays.asList("Company_A_Code", "Name", "Company_B_Code", "Name", "Start date",
                 "Amount", "Status");
+    }
+
+    public static DateTimeFormatter getDateFormatter() {
+        return DateTimeFormatter.ofPattern("yyyy-MM-dd");
     }
 
     public List<String> getFieldValue() {

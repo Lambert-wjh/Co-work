@@ -107,6 +107,7 @@ public class SuperuserMenu {
                     case 5 -> {
                     }
                     case 6 -> {
+                        user.updateProjectStatus();
                     }
                 }
                 if (selection != 0) {
