@@ -17,12 +17,18 @@ import entity.staff.Leader;
 import entity.staff.Superuser;
 
 public class DAO {
-    private JDBC jdbc = JDBC.getJDBC();
+    private static final DAO INSTANCE = new DAO();
+
+    private DAO() {}
+
+    public static DAO getDAO() {
+        return INSTANCE;
+    }
 
     public List<Employee> createStaff(String select_clause, List<String> parameters) {
         List<Employee> staff = new ArrayList<>();
 
-        try (Connection connection = jdbc.getConnection()) {
+        try (Connection connection = JDBC.getJDBC().getConnection()) {
             try (PreparedStatement prepared_statement =
                     connection.prepareStatement(select_clause)) {
                 for (int i = 0; i < parameters.size(); i++) {
@@ -67,7 +73,7 @@ public class DAO {
     public List<Project> createProjects(String select_clause, List<String> parameters) {
         List<Project> projects = new ArrayList<Project>();
 
-        try (Connection connection = jdbc.getConnection()) {
+        try (Connection connection = JDBC.getJDBC().getConnection()) {
             try (PreparedStatement prepared_statement =
                     connection.prepareStatement(select_clause)) {
                 for (int i = 0; i < parameters.size(); i++) {
@@ -99,7 +105,7 @@ public class DAO {
     public int updateTable(String update_clause, List<String> parameters) {
         int update_count = 0;
 
-        try (Connection connection = jdbc.getConnection()) {
+        try (Connection connection = JDBC.getJDBC().getConnection()) {
             try (PreparedStatement prepared_statement =
                     connection.prepareStatement(update_clause)) {
                 for (int i = 0; i < parameters.size(); i++) {

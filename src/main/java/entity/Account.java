@@ -46,8 +46,7 @@ public class Account {
         parameters.add(new_password);
         parameters.add(this.account);
 
-        DAO dao = new DAO();
-        if (dao.updateTable(update_clause, parameters) == 0) {
+        if (DAO.getDAO().updateTable(update_clause, parameters) == 0) {
             System.err.println("Failed to change password");
         } else {
             System.out.println("Change password successfully");

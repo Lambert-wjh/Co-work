@@ -12,12 +12,6 @@ import entity.staff.Superuser;
 import entity.staff.Team;
 
 public class Factory {
-    private DAO dao;
-
-    public Factory() {
-        this.dao = new DAO();
-    }
-
     public Employee getEmployee(String require_id) {
         return this.getStaff(require_id);
     }
@@ -34,7 +28,7 @@ public class Factory {
         String select_clause = "SELECT * FROM Employee WHERE id=?";
         List<String> parameters = new ArrayList<>();
         parameters.add(require_id);
-        List<Employee> staff = this.dao.createStaff(select_clause, parameters);
+        List<Employee> staff = DAO.getDAO().createStaff(select_clause, parameters);
 
         if (staff.size() == 0) {
             System.err.println("No such staff");
@@ -49,7 +43,7 @@ public class Factory {
         parameters.add(require_leader_id);
 
         Leader leader = this.getLeader(require_leader_id);
-        List<Employee> employees = this.dao.createStaff(select_clause, parameters);
+        List<Employee> employees = DAO.getDAO().createStaff(select_clause, parameters);
         int member_count = employees.size() + 1;
         double sales_total = leader.getSales();
         for (Employee employee : employees) {
@@ -78,7 +72,7 @@ public class Factory {
                 select_clause = "SELECT * FROM Project";
             }
         }
-        return this.dao.createProjects(select_clause, parameters);
+        return DAO.getDAO().createProjects(select_clause, parameters);
     }
 
     public List<Project> getProjects(String code_a, String code_b, LocalDate start,
@@ -104,6 +98,6 @@ public class Factory {
                 parameters.add(Project.getDateFormatter().format(start));
             }
         }
-        return this.dao.createProjects(select_clause, parameters);
+        return DAO.getDAO().createProjects(select_clause, parameters);
     }
 }

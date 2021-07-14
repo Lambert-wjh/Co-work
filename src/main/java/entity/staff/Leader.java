@@ -68,8 +68,7 @@ public class Leader extends Employee {
         parameters.add(code_b);
         parameters.add(start);
 
-        DAO dao = new DAO();
-        dao.updateTable(update_clause, parameters);
+        DAO.getDAO().updateTable(update_clause, parameters);
         System.out.println("The project status was modified successfully");
     }
 }

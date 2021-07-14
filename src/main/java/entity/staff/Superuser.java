@@ -69,8 +69,7 @@ public class Superuser extends Leader {
         parameters.add(code_b);
         parameters.add(start);
 
-        DAO dao = new DAO();
-        dao.updateTable(update_clause, parameters);
+        DAO.getDAO().updateTable(update_clause, parameters);
         System.out.println("The project status was modified successfully");
     }
 
@@ -123,8 +122,7 @@ public class Superuser extends Leader {
         parameters.add(new_password);
         parameters.add(staff.getId());
 
-        DAO dao = new DAO();
-        dao.updateTable(update_clause, parameters);
+        DAO.getDAO().updateTable(update_clause, parameters);
         System.out.println("Modified the staff information successfully");
     }
 
@@ -146,8 +144,7 @@ public class Superuser extends Leader {
         parameters.add(sex.name());
         parameters.add(Integer.valueOf(age).toString());
 
-        DAO dao = new DAO();
-        dao.updateTable(update_clause, parameters);
+        DAO.getDAO().updateTable(update_clause, parameters);
         System.out.println("Create new staff successfully, the staff's information is as follows");
 
         Factory factory = new Factory();
@@ -176,8 +173,7 @@ public class Superuser extends Leader {
             List<String> parameters = new ArrayList<>();
             parameters.add(id);
 
-            DAO dao = new DAO();
-            dao.updateTable(update_clause, parameters);
+            DAO.getDAO().updateTable(update_clause, parameters);
             System.out.println("Delete staff's record successfully");
         } else {
             System.out.println("You have cancelled the deletion");
