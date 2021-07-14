@@ -87,9 +87,6 @@ public class Superuser extends Leader {
             System.out.println(staff);
         }
 
-        String update_clause =
-                "UPDATE Employee SET id=?, name=?, sex=?, age=?, password=? WHERE id=?";
-        List<String> parameters = new ArrayList<>();
         String temp_input = null;
         String new_id = staff.getId();
         String new_name = staff.getName();
@@ -98,23 +95,26 @@ public class Superuser extends Leader {
         String new_password = staff.getAccount().getPassword();
 
         System.out.print("Enter new ID (Please enter N if you don't want to change it) : ");
-        temp_input = input.next();
+        temp_input = input.nextLine();
         new_id = temp_input.equals("N") ? new_id : temp_input;
         System.out.print("Enter new name (Please enter N if you don't want to change it) : ");
-        temp_input = input.next();
+        temp_input = input.nextLine();
         new_name = temp_input.equals("N") ? new_name : temp_input;
         System.out.print(
                 "Enter new sex (MALE or FEMALE) (Please enter N if you don't want to change it) : ");
-        temp_input = input.next();
+        temp_input = input.nextLine();
         new_sex = temp_input.equals("N") ? new_sex : Sex.valueOf(temp_input);
         System.out.print(
                 "Enter new age (18 ~ 65) (Please enter N if you don't want to change it) : ");
-        temp_input = input.next();
+        temp_input = input.nextLine();
         new_age = temp_input.equals("N") ? new_age : Integer.parseInt(temp_input);
         System.out.print("Reset password ? (Y or N) : ");
-        temp_input = input.next();
+        temp_input = input.nextLine();
         new_password = temp_input.equals("N") ? new_password : "123456";
 
+        String update_clause =
+                "UPDATE Employee SET id=?, name=?, sex=?, age=?, password=? WHERE id=?";
+        List<String> parameters = new ArrayList<>();
         parameters.add(new_id);
         parameters.add(new_name);
         parameters.add(new_sex.name());
