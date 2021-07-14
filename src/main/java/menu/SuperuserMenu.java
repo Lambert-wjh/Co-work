@@ -89,7 +89,7 @@ public class SuperuserMenu {
             do {
                 MethodSet.clearScreen();
                 System.out.println("1. Create new project");
-                System.out.println("2. Revoke a project");
+                System.out.println("2. Delete specified project record");
                 System.out.println("3. Check all project information");
                 System.out.println("4. Check specified project information");
                 System.out.println("5. Update specified project information");
@@ -99,8 +99,10 @@ public class SuperuserMenu {
                 selection = input.nextInt();
                 switch (selection) {
                     case 1 -> {
+                        user.createNewProject();
                     }
                     case 2 -> {
+                        user.deleteProjectRecord();
                     }
                     case 3 -> {
                         user.checkProjectInfo();

@@ -26,10 +26,9 @@ public class Superuser extends Leader {
         Employee staff = factory.getStaff(id);
         if (staff == null) {
             return;
-        } else {
-            System.out.println("The staff's information is as follows");
-            System.out.println(staff);
         }
+        System.out.println("The staff's information is as follows");
+        System.out.println(staff);
 
         String temp_input = null;
         String new_id = staff.getId();
@@ -105,10 +104,9 @@ public class Superuser extends Leader {
         Employee staff = factory.getStaff(id);
         if (staff == null) {
             return;
-        } else {
-            System.out.println("The staff's information is as follows");
-            System.out.println(staff);
         }
+        System.out.println("The staff's information is as follows");
+        System.out.println(staff);
 
         System.out.print("Confirm deletion (Y or N) : ");
         String deletion = input.nextLine();
@@ -118,7 +116,76 @@ public class Superuser extends Leader {
             parameters.add(id);
 
             DAO.getDAO().updateTable(update_clause, parameters);
-            System.out.println("Delete staff's record successfully");
+            System.out.println("Delete the staff's record successfully");
+        } else {
+            System.out.println("You have cancelled the deletion");
+        }
+    }
+
+    public void createNewProject() {
+        Scanner input = new Scanner(System.in);
+        System.out.print("Enter company A's code: ");
+        String code_a = input.nextLine();
+        System.out.print("Enter company B's code: ");
+        String code_b = input.nextLine();
+        System.out.print("Enter start date of the project (yyyy-MM-dd) : ");
+        String start = input.nextLine();
+        System.out.print("Enter amount of the project: ");
+        String amount = input.nextLine();
+        System.out.print("Enter leader's id of the assigned team: ");
+        String leader_id = input.nextLine();
+
+        String update_clause =
+                "INSERT INTO Project (code_a, code_b, start, amount, leader_id) VALUES (?, ?, ?, ?, ?)";
+        List<String> parameters = new ArrayList<>();
+        parameters.add(code_a);
+        parameters.add(code_b);
+        parameters.add(start);
+        parameters.add(amount);
+        parameters.add(leader_id);
+
+        DAO.getDAO().updateTable(update_clause, parameters);
+        System.out.println(
+                "Create new project successfully, the project's information is as follows");
+
+        Factory factory = new Factory();
+        Project project = factory.getProjects(code_a, code_b,
+                LocalDate.parse(start, Project.getDateFormatter()), this.id, this.position).get(0);
+        System.out.println(project);
+    }
+
+    public void deleteProjectRecord() {
+        Scanner input = new Scanner(System.in);
+        System.out.println(
+                "Enter company A's, company B's code and start date (yyyy-MM-dd) of the project in order: ");
+        String code_a = input.next();
+        String code_b = input.next();
+        String start = input.next();
+
+        Factory factory = new Factory();
+        List<Project> projects = factory.getProjects(code_a, code_b,
+                LocalDate.parse(start, Project.getDateFormatter()), this.id, this.position);
+
+        if (projects.size() == 0) {
+            System.err.println("No such project");
+            return;
+        }
+        Project project = projects.get(0);
+        System.out.println("The project's information is as follows");
+        System.out.println(project);
+
+        System.out.print("Confirm deletion (Y or N) : ");
+        input.nextLine();
+        String deletion = input.nextLine();
+        if (deletion.equals("Y")) {
+            String update_clause = "DELETE FROM Project WHERE code_a =? AND code_b=? AND start=?";
+            List<String> parameters = new ArrayList<>();
+            parameters.add(code_a);
+            parameters.add(code_b);
+            parameters.add(start);
+
+            DAO.getDAO().updateTable(update_clause, parameters);
+            System.out.println("Delete the project's record successfully");
         } else {
             System.out.println("You have cancelled the deletion");
         }
