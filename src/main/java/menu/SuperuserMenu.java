@@ -73,12 +73,14 @@ public class SuperuserMenu {
                 selection = input.nextInt();
                 switch (selection) {
                     case 1 -> {
+                        user.createNewTeam();
                     }
                     case 2 -> {
                     }
                     case 3 -> {
                     }
                     case 4 -> {
+                        user.deleteTeamRecord();
                     }
                 }
                 if (selection != 0) {
@@ -108,13 +110,13 @@ public class SuperuserMenu {
                         user.checkProjectInfo();
                     }
                     case 4 -> {
-                        user.checkSpecifiedProjectInfo();
+                        user.checkTheProjectInfo();
                     }
                     case 5 -> {
-                        user.updateSpecifiedProjectInfo();
+                        user.updateTheProjectInfo();
                     }
                     case 6 -> {
-                        user.updateProjectStatus();
+                        user.updateTheProjectStatus();
                     }
                 }
                 if (selection != 0) {

@@ -1,7 +1,7 @@
 package entity;
 
 import java.io.Console;
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import database.DAO;
 
@@ -25,8 +25,8 @@ public class Account {
     public void setPassword() {
         Console console = System.console();
         System.out.print("Enter original password: ");
-        String formal_password = new String(console.readPassword());
-        if (!password.equals(formal_password)) {
+        String original_password = new String(console.readPassword());
+        if (!password.equals(original_password)) {
             System.err.println("The original password is wrong");
             return;
         }
@@ -42,9 +42,7 @@ public class Account {
         this.password = new_password;
 
         String update_clause = "UPDATE Employee SET password=? WHERE id=?";
-        List<String> parameters = new ArrayList<>();
-        parameters.add(new_password);
-        parameters.add(this.account);
+        List<String> parameters = Arrays.asList(this.password, this.account);
 
         if (DAO.getDAO().updateTable(update_clause, parameters) == 0) {
             System.err.println("Failed to change password");

@@ -2,8 +2,10 @@ package entity.staff;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
+import java.util.stream.Collectors;
 import database.DAO;
 import entity.Factory;
 import entity.business.Project;
@@ -22,9 +24,9 @@ public class Superuser extends Leader {
         System.out.print("Enter staff's ID: ");
         String id = input.nextLine();
 
-        Factory factory = new Factory();
-        Employee staff = factory.getStaff(id);
+        Employee staff = Factory.getFactory().getStaff(id);
         if (staff == null) {
+            System.err.println("No such staff");
             return;
         }
         System.out.println("The staff's information is as follows");
@@ -57,16 +59,16 @@ public class Superuser extends Leader {
 
         String update_clause =
                 "UPDATE Employee SET id=?, name=?, sex=?, age=?, password=? WHERE id=?";
-        List<String> parameters = new ArrayList<>();
-        parameters.add(new_id);
-        parameters.add(new_name);
-        parameters.add(new_sex.name());
-        parameters.add(Integer.valueOf(new_age).toString());
-        parameters.add(new_password);
-        parameters.add(staff.getId());
-
-        DAO.getDAO().updateTable(update_clause, parameters);
-        System.out.println("Modified the staff information successfully");
+        List<String> parameters = Arrays.asList(new_id, new_name, new_sex.name(),
+                Integer.valueOf(new_age).toString(), new_password, staff.getId());
+        if (DAO.getDAO().updateTable(update_clause, parameters) == 0) {
+            System.err.println("Failed to modify the staff information");
+            staff = Factory.getFactory().getStaff(id);
+            System.out.println("The staff's information is as follows");
+            System.out.println(staff);
+        } else {
+            System.out.println("Modified the staff information successfully");
+        }
     }
 
     public void createNewStaff() {
@@ -81,18 +83,17 @@ public class Superuser extends Leader {
         int age = input.nextInt();
 
         String update_clause = "INSERT INTO Employee (id, name, sex, age) VALUES (?, ?, ?, ?)";
-        List<String> parameters = new ArrayList<>();
-        parameters.add(id);
-        parameters.add(name);
-        parameters.add(sex.name());
-        parameters.add(Integer.valueOf(age).toString());
+        List<String> parameters =
+                Arrays.asList(id, name, sex.name(), Integer.valueOf(age).toString());
 
-        DAO.getDAO().updateTable(update_clause, parameters);
-        System.out.println("Create new staff successfully, the staff's information is as follows");
-
-        Factory factory = new Factory();
-        Employee staff = factory.getStaff(id);
-        System.out.println(staff);
+        if (DAO.getDAO().updateTable(update_clause, parameters) == 0) {
+            System.err.println("Failed to create a new staff");
+        } else {
+            System.out.println(
+                    "Create new staff successfully, the staff's information is as follows");
+            Employee staff = Factory.getFactory().getStaff(id);
+            System.out.println(staff);
+        }
     }
 
     public void deleteStaffRecord() {
@@ -100,9 +101,9 @@ public class Superuser extends Leader {
         System.out.print("Enter staff's ID: ");
         String id = input.nextLine();
 
-        Factory factory = new Factory();
-        Employee staff = factory.getStaff(id);
+        Employee staff = Factory.getFactory().getStaff(id);
         if (staff == null) {
+            System.err.println("No such staff");
             return;
         }
         System.out.println("The staff's information is as follows");
@@ -112,11 +113,113 @@ public class Superuser extends Leader {
         String deletion = input.nextLine();
         if (deletion.equals("Y")) {
             String update_clause = "DELETE FROM Employee WHERE id=?";
-            List<String> parameters = new ArrayList<>();
-            parameters.add(id);
+            List<String> parameters = Arrays.asList(id);
 
+            if (DAO.getDAO().updateTable(update_clause, parameters) == 0) {
+                System.err.println("Failed to delete the staff's record");
+            } else {
+                System.out.println("Delete the staff's record successfully");
+            }
+        } else {
+            System.out.println("You have cancelled the deletion");
+        }
+    }
+
+    private void updateMemberCount() {
+        String select_clause = "SELECT leader_id FROM Team";
+        List<String> parameters = Arrays.asList();
+        List<String> leader_ids = Factory.getFactory().getAttributes(select_clause, parameters)
+                .stream().map(Object::toString).collect(Collectors.toList());
+
+        for (String leader_id : leader_ids) {
+            select_clause = "SELECT * FROM Employee WHERE leader_id=?";
+            parameters = Arrays.asList(leader_id);
+            List<Employee> employees = Factory.getFactory().getStaff(select_clause, parameters);
+
+            select_clause = "UPDATE Team SET member_count=? WHERE leader_id=?";
+            parameters = Arrays.asList(Integer.valueOf(employees.size() + 1).toString(), leader_id);
+            DAO.getDAO().updateTable(select_clause, parameters);
+        }
+    }
+
+    public void createNewTeam() {
+        Scanner input = new Scanner(System.in);
+        System.out.print("Enter new team leader's ID: ");
+        String leader_id = input.nextLine();
+
+        Employee pre_leader = Factory.getFactory().getEmployee(leader_id);
+        if (pre_leader == null) {
+            System.err.println("No such staff");
+            return;
+        } else if (pre_leader.getPosition() == Position.LEADER) {
+            System.err.println("This staff has led a team");
+            return;
+        }
+
+        String update_clause = "INSERT INTO Team (leader_id, member_count) VALUES (?, ?)";
+        List<String> parameters = Arrays.asList(pre_leader.getId(), Integer.valueOf(1).toString());
+        DAO.getDAO().updateTable(update_clause, parameters);
+
+        update_clause = "UPDATE Employee SET leader_id='AAA00000', position='LEADER' WHERE id=?";
+        parameters = Arrays.asList(pre_leader.getId());
+        DAO.getDAO().updateTable(update_clause, parameters);
+
+        String temp_input = "Y";
+        while (temp_input.equals("Y")) {
+            System.out.print("Enter the employee's id: ");
+            String id = input.nextLine();
+            Employee employee = Factory.getFactory().getEmployee(id);
+            if (employee == null) {
+                System.err.println("No such staff");
+                continue;
+            } else if (employee.getPosition() != Position.EMPLOYEE) {
+                System.err.println("Not a employee and not been added");
+                continue;
+            } else {
+                update_clause = "UPDATE Employee SET leader_id=? WHERE id=?";
+                parameters = Arrays.asList(pre_leader.getId(), employee.getId());
+
+                DAO.getDAO().updateTable(update_clause, parameters);
+            }
+            System.out.print("Continue adding employees (Y or N) : ");
+            temp_input = input.nextLine();
+        }
+
+        Team team = Factory.getFactory().getTeam(pre_leader.getId());
+        System.out.println("The team's information is as follows");
+        System.out.println(team);
+
+        this.updateMemberCount();
+    }
+
+    public void deleteTeamRecord() {
+        Scanner input = new Scanner(System.in);
+        System.out.print("Enter the team leader's ID: ");
+        String leader_id = input.nextLine();
+
+        Employee staff = Factory.getFactory().getLeader(leader_id);
+        if (staff == null) {
+            System.err.println("Not such leader");
+            return;
+        }
+
+        Team team = Factory.getFactory().getTeam(leader_id);
+        System.out.println("The team's information is as follows");
+        System.out.println(team);
+
+        System.out.print("Confirm deletion (Y or N) : ");
+        String deletion = input.nextLine();
+        if (deletion.equals("Y")) {
+            String update_clause = "UPDATE Employee SET leader_id=null WHERE leader_id=?";
+            List<String> parameters = Arrays.asList(leader_id);
             DAO.getDAO().updateTable(update_clause, parameters);
-            System.out.println("Delete the staff's record successfully");
+
+            update_clause = "UPDATE Employee SET leader_id=null, position='EMPLOYEE' WHERE id=?";
+            DAO.getDAO().updateTable(update_clause, parameters);
+
+            update_clause = "DELETE FROM Team WHERE leader_id=?";
+            DAO.getDAO().updateTable(update_clause, parameters);
+            System.out.println("Delete the team's record successfully");
         } else {
             System.out.println("You have cancelled the deletion");
         }
@@ -137,98 +240,94 @@ public class Superuser extends Leader {
 
         String update_clause =
                 "INSERT INTO Project (code_a, code_b, start, amount, leader_id) VALUES (?, ?, ?, ?, ?)";
-        List<String> parameters = new ArrayList<>();
-        parameters.add(code_a);
-        parameters.add(code_b);
-        parameters.add(start);
-        parameters.add(amount);
-        parameters.add(leader_id);
+        List<String> parameters = Arrays.asList(code_a, code_b, start, amount, leader_id);
 
-        DAO.getDAO().updateTable(update_clause, parameters);
-        System.out.println(
-                "Create new project successfully, the project's information is as follows");
+        if (DAO.getDAO().updateTable(update_clause, parameters) == 0) {
+            System.err.println("Failed to create a new project");
+        } else {
+            System.out.println(
+                    "Create new project successfully, the project's information is as follows");
+            Project project = Factory.getFactory().getProject(code_a, code_b,
+                    LocalDate.parse(start, Project.getDateFormatter()));
+            System.out.println(project);
+        }
 
-        Factory factory = new Factory();
-        Project project = factory.getProjects(code_a, code_b,
-                LocalDate.parse(start, Project.getDateFormatter()), this.id, this.position).get(0);
-        System.out.println(project);
     }
 
     public void deleteProjectRecord() {
         Scanner input = new Scanner(System.in);
-        System.out.println(
-                "Enter company A's, company B's code and start date (yyyy-MM-dd) of the project in order: ");
-        String code_a = input.next();
-        String code_b = input.next();
-        String start = input.next();
+        System.out.print("Enter company A's code of the project: ");
+        String code_a = input.nextLine();
+        System.out.print("Enter company B's code of the project: ");
+        String code_b = input.nextLine();
+        System.out.print("Enter start date of the project (yyyy-MM-dd) : ");
+        String start = input.nextLine();
 
-        Factory factory = new Factory();
-        List<Project> projects = factory.getProjects(code_a, code_b,
-                LocalDate.parse(start, Project.getDateFormatter()), this.id, this.position);
+        Project project = Factory.getFactory().getProject(code_a, code_b,
+                LocalDate.parse(start, Project.getDateFormatter()));
 
-        if (projects.size() == 0) {
+        if (project == null) {
             System.err.println("No such project");
             return;
         }
-        Project project = projects.get(0);
+
         System.out.println("The project's information is as follows");
         System.out.println(project);
 
         System.out.print("Confirm deletion (Y or N) : ");
-        input.nextLine();
         String deletion = input.nextLine();
         if (deletion.equals("Y")) {
             String update_clause = "DELETE FROM Project WHERE code_a =? AND code_b=? AND start=?";
-            List<String> parameters = new ArrayList<>();
-            parameters.add(code_a);
-            parameters.add(code_b);
-            parameters.add(start);
+            List<String> parameters = Arrays.asList(code_a, code_b, start);
 
-            DAO.getDAO().updateTable(update_clause, parameters);
-            System.out.println("Delete the project's record successfully");
+            if (DAO.getDAO().updateTable(update_clause, parameters) == 0) {
+                System.err.println("Failed to delete the project's record");
+            } else {
+                System.out.println("Delete the project's record successfully");
+            }
         } else {
             System.out.println("You have cancelled the deletion");
         }
     }
 
-    public void checkSpecifiedProjectInfo() {
+    public void checkTheProjectInfo() {
         Scanner input = new Scanner(System.in);
-        System.out.println(
-                "Enter company A's, company B's code and start date (yyyy-MM-dd) of the project in order: ");
-        String code_a = input.next();
-        String code_b = input.next();
-        String start = input.next();
+        System.out.print("Enter company A's code of the project: ");
+        String code_a = input.nextLine();
+        System.out.print("Enter company B's code of the project: ");
+        String code_b = input.nextLine();
+        System.out.print("Enter start date of the project (yyyy-MM-dd) : ");
+        String start = input.nextLine();
 
-        Factory factory = new Factory();
-        List<Project> projects = factory.getProjects(code_a, code_b,
-                LocalDate.parse(start, Project.getDateFormatter()), this.id, this.position);
+        Project project = Factory.getFactory().getProject(code_a, code_b,
+                LocalDate.parse(start, Project.getDateFormatter()));
 
-        if (projects.size() == 0) {
+        if (project == null) {
             System.err.println("No such project");
             return;
         }
-        Project project = projects.get(0);
+
         System.out.println("The project's information is as follows");
         System.out.println(project);
     }
 
-    public void updateSpecifiedProjectInfo() {
+    public void updateTheProjectInfo() {
         Scanner input = new Scanner(System.in);
-        System.out.println(
-                "Enter company A's, company B's code and start date (yyyy-MM-dd) of the project in order: ");
-        String code_a = input.next();
-        String code_b = input.next();
-        String start = input.next();
+        System.out.print("Enter company A's code of the project: ");
+        String code_a = input.nextLine();
+        System.out.print("Enter company B's code of the project: ");
+        String code_b = input.nextLine();
+        System.out.print("Enter start date of the project (yyyy-MM-dd) : ");
+        String start = input.nextLine();
 
-        Factory factory = new Factory();
-        List<Project> projects = factory.getProjects(code_a, code_b,
-                LocalDate.parse(start, Project.getDateFormatter()), this.id, this.position);
+        Project project = Factory.getFactory().getProject(code_a, code_b,
+                LocalDate.parse(start, Project.getDateFormatter()));
 
-        if (projects.size() == 0) {
+        if (project == null) {
             System.err.println("No such project");
             return;
         }
-        Project project = projects.get(0);
+
         System.out.println("The project's information is as follows");
         System.out.println(project);
 
@@ -237,10 +336,10 @@ public class Superuser extends Leader {
         String new_code_b = project.getCodeB();
         LocalDate new_start = project.getStartDate();
         double new_amount = project.getAmount();
+        String new_leader_id = project.getLeaderId();
 
         System.out.print(
                 "Enter new company A's code (Please enter N if you don't want to change it) : ");
-        input.nextLine();
         temp_input = input.nextLine();
         new_code_a = temp_input.equals("N") ? new_code_a : temp_input;
         System.out.print(
@@ -255,45 +354,51 @@ public class Superuser extends Leader {
         System.out.print("Enter new amount (Please enter N if you don't want to change it) : ");
         temp_input = input.nextLine();
         new_amount = temp_input.equals("N") ? new_amount : Double.parseDouble(temp_input);
+        System.out
+                .print("Enter new leader's ID (Please enter N if you don't want to change it) : ");
+        temp_input = input.nextLine();
+        new_leader_id = temp_input.equals("N") ? new_leader_id : temp_input;
 
         String update_clause =
-                "UPDATE Project SET code_a=?, code_b=?, start=?, amount=? WHERE code_a=? AND code_b=? AND start=?";
-        List<String> parameters = new ArrayList<>();
-        parameters.add(new_code_a);
-        parameters.add(new_code_b);
-        parameters.add(Project.getDateFormatter().format(new_start));
-        parameters.add(Double.valueOf(new_amount).toString());
-        parameters.add(project.getCodeA());
-        parameters.add(project.getCodeB());
-        parameters.add(Project.getDateFormatter().format(project.getStartDate()));
+                "UPDATE Project SET code_a=?, code_b=?, start=?, amount=?, leader_id=? WHERE code_a=? AND code_b=? AND start=?";
+        List<String> parameters = Arrays.asList(new_code_a, new_code_b,
+                Project.getDateFormatter().format(new_start), Double.valueOf(new_amount).toString(),
+                new_leader_id, project.getCodeA(), project.getCodeB(),
+                Project.getDateFormatter().format(project.getStartDate()));
 
-        DAO.getDAO().updateTable(update_clause, parameters);
-        System.out.println("Update specified project's information successfully");
+        if (DAO.getDAO().updateTable(update_clause, parameters) == 0) {
+            System.err.println("Failed to update the project's information");
+        } else {
+            System.out.println("Update specified project's information successfully");
+            project = Factory.getFactory().getProject(new_code_a, new_code_b, new_start);
+            System.out.println("The project's information is as follows");
+            System.out.println(project);
+        }
     }
 
     @Override
-    public void updateProjectStatus() {
+    public void updateTheProjectStatus() {
         Scanner input = new Scanner(System.in);
-        System.out.println(
-                "Enter company A's, company B's code and start date (yyyy-MM-dd) of the project in order: ");
-        String code_a = input.next();
-        String code_b = input.next();
-        String start = input.next();
+        System.out.print("Enter company A's code of the project: ");
+        String code_a = input.nextLine();
+        System.out.print("Enter company B's code of the project: ");
+        String code_b = input.nextLine();
+        System.out.print("Enter start date of the project (yyyy-MM-dd) : ");
+        String start = input.nextLine();
 
-        Factory factory = new Factory();
-        List<Project> projects = factory.getProjects(code_a, code_b,
-                LocalDate.parse(start, Project.getDateFormatter()), this.id, this.position);
+        Project project = Factory.getFactory().getProject(code_a, code_b,
+                LocalDate.parse(start, Project.getDateFormatter()));
 
-        if (projects.size() == 0) {
-            System.err.println("You can't change the project");
+        if (project == null) {
+            System.err.println("No such project");
             return;
         }
-        Project project = projects.get(0);
+
         System.out.println("The current status of the project is " + project.getStatus());
         System.out.println(
                 "You can change it to 1. COMPLETED or 2. PAUSED or 3. IN_PROGRESS or 4. ARCHIVED or 5. REVOKED");
         System.out.print("Now enter your selection: ");
-        int selection = input.nextInt();
+        int selection = Integer.valueOf(input.nextLine());
 
         String update_clause =
                 "UPDATE Project SET status=? WHERE code_a=? AND code_b=? AND start=?";
@@ -323,7 +428,10 @@ public class Superuser extends Leader {
         parameters.add(code_b);
         parameters.add(start);
 
-        DAO.getDAO().updateTable(update_clause, parameters);
-        System.out.println("The project status was modified successfully");
+        if (DAO.getDAO().updateTable(update_clause, parameters) == 0) {
+            System.err.println("Failed to update status of the project");
+        } else {
+            System.out.println("The project status was modified successfully");
+        }
     }
 }

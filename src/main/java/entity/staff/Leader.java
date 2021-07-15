@@ -5,11 +5,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 import database.DAO;
-import entity.Factory;
 import entity.business.Project;
 import entity.enums.Position;
 import entity.enums.Sex;
 import entity.enums.Status;
+import entity.Factory;
 
 public class Leader extends Employee {
     public Leader(String id, String name, Sex sex, int age, String leader_id, Position position,
@@ -18,33 +18,35 @@ public class Leader extends Employee {
     }
 
     public void checkTeamInfo() {
-        Factory factory = new Factory();
-        Team team = factory.getTeam(this.id);
+        Team team = Factory.getFactory().getTeam(this.id);
 
         System.out.print(team);
     }
 
-    public void updateProjectStatus() {
+    public void updateTheProjectStatus() {
         Scanner input = new Scanner(System.in);
-        System.out.println(
-                "Enter company A's, company B's code and start date of the project in order: ");
-        String code_a = input.next();
-        String code_b = input.next();
-        String start = input.next();
+        System.out.print("Enter company A's code of the project: ");
+        String code_a = input.nextLine();
+        System.out.print("Enter company B's code of the project: ");
+        String code_b = input.nextLine();
+        System.out.print("Enter start date of the project (yyyy-MM-dd) : ");
+        String start = input.nextLine();
 
-        Factory factory = new Factory();
-        List<Project> projects = factory.getProjects(code_a, code_b,
-                LocalDate.parse(start, Project.getDateFormatter()), this.id, this.position);
+        Project project = Factory.getFactory().getProject(code_a, code_b,
+                LocalDate.parse(start, Project.getDateFormatter()));
 
-        if (projects.size() == 0) {
+        if (project == null) {
+            System.err.println("No such a project");
+            return;
+        } else if (!project.getLeaderId().equals(this.id)) {
             System.err.println("You can't change the project");
             return;
         }
-        Project project = projects.get(0);
+
         System.out.println("The current status of the project is " + project.getStatus());
         System.out.print(
                 "You can change it to 1. COMPLETED or 2. PAUSED or 3. IN_PROGRESS. Now enter your selection: ");
-        int selection = input.nextInt();
+        int selection = Integer.valueOf(input.nextLine());
 
         String update_clause =
                 "UPDATE Project SET status=? WHERE code_a=? AND code_b=? AND start=?";
@@ -68,7 +70,10 @@ public class Leader extends Employee {
         parameters.add(code_b);
         parameters.add(start);
 
-        DAO.getDAO().updateTable(update_clause, parameters);
-        System.out.println("The project status was modified successfully");
+        if (DAO.getDAO().updateTable(update_clause, parameters) == 0) {
+            System.err.println("Failed to update status of the project");
+        } else {
+            System.out.println("The project status was modified successfully");
+        }
     }
 }

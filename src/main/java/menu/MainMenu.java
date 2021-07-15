@@ -63,8 +63,7 @@ public class MainMenu {
         System.out.print("Password: ");
         String input_password = new String(console.readPassword());
 
-        Factory factory = new Factory();
-        Employee user = factory.getStaff(input_account);
+        Employee user = Factory.getFactory().getStaff(input_account);
 
         if (!user.getAccount().verifyPassword(input_password)) {
             System.err.println("The password is wrong");

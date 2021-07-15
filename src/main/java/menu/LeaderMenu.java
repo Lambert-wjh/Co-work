@@ -63,7 +63,7 @@ public class LeaderMenu {
                         user.checkProjectInfo();
                     }
                     case 2 -> {
-                        user.updateProjectStatus();
+                        user.updateTheProjectStatus();
                     }
                 }
                 if (selection != 0) {

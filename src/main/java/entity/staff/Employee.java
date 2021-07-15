@@ -4,11 +4,11 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import entity.Account;
-import entity.Factory;
 import entity.MethodSet;
 import entity.business.Project;
 import entity.enums.Position;
 import entity.enums.Sex;
+import entity.Factory;
 
 public class Employee extends Person {
     protected String id;
@@ -30,7 +30,7 @@ public class Employee extends Person {
     }
 
     public String getId() {
-        return id;
+        return this.id;
     }
 
     public Account getAccount() {
@@ -47,9 +47,8 @@ public class Employee extends Person {
 
     @Override
     public String toString() {
-        List<List<String>> rows = new ArrayList<>();
-        rows.add(Employee.getFieldName());
-        rows.add(this.getFieldValue());
+        List<List<String>> rows = Arrays.asList(Employee.getFieldName(), this.getFieldValue());
+
         return MethodSet.formatAsTable(rows);
     }
 
@@ -72,15 +71,31 @@ public class Employee extends Person {
     }
 
     public void checkProjectInfo() {
-        Factory factory = new Factory();
-        List<Project> projects = factory.getProjects(this.id, this.position);
-        List<List<String>> rows = new ArrayList<>();
+        String select_clause = null;
+        List<String> parameters = null;
+        switch (this.position) {
+            case EMPLOYEE -> {
+                select_clause =
+                        "SELECT * FROM Project WHERE leader_id IN (SELECT leader_id FROM Employee WHERE id=?) AND status!='ARCHIVED' AND status !='REVOKED'";
+                parameters = Arrays.asList(this.id);
+            }
+            case LEADER -> {
+                select_clause = "SELECT * FROM Project WHERE leader_id=?";
+                parameters = Arrays.asList(this.id);
+            }
+            case SUPERUSER -> {
+                select_clause = "SELECT * FROM Project";
+                parameters = Arrays.asList();
+            }
+        }
+        List<Project> projects = Factory.getFactory().getProjects(select_clause, parameters);
 
         if (projects.size() == 0) {
             System.err.println("You have not taken over any projects");
             return;
         }
 
+        List<List<String>> rows = new ArrayList<>();
         rows.add(Project.getFieldName());
         for (Project project : projects) {
             rows.add(project.getFieldValue());

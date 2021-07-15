@@ -1,7 +1,7 @@
 package entity;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import database.DAO;
 import entity.business.Project;
@@ -12,93 +12,104 @@ import entity.staff.Superuser;
 import entity.staff.Team;
 
 public class Factory {
-    public Employee getEmployee(String require_id) {
-        return this.getStaff(require_id);
+    private static final Factory INSTANCE = new Factory();
+
+    private Factory() {}
+
+    public static Factory getFactory() {
+        return INSTANCE;
     }
 
-    public Leader getLeader(String require_id) {
-        return (Leader) this.getStaff(require_id);
-    }
+    public Team getTeam(String leader_id) {
+        String select_clause = "SELECT * FROM Team WHERE leader_id=?";
+        List<String> parameters = Arrays.asList(leader_id);
+        List<Team> teams = DAO.getDAO().createTeams(select_clause, parameters);
 
-    public Superuser getSuperuser(String require_id) {
-        return (Superuser) this.getStaff(require_id);
-    }
-
-    public Employee getStaff(String require_id) {
-        String select_clause = "SELECT * FROM Employee WHERE id=?";
-        List<String> parameters = new ArrayList<>();
-        parameters.add(require_id);
-
-        List<Employee> staff = DAO.getDAO().createStaff(select_clause, parameters);
-
-        if (staff.size() == 0) {
-            System.err.println("No such staff");
+        if (teams.size() != 0) {
+            return teams.get(0);
+        } else {
             return null;
         }
-        return staff.get(0);
     }
 
-    public Team getTeam(String require_leader_id) {
-        Leader leader = this.getLeader(require_leader_id);
-        String select_clause = "SELECT * FROM Employee WHERE leader_id=?";
-        List<String> parameters = new ArrayList<>();
-        parameters.add(require_leader_id);
-
-        List<Employee> employees = DAO.getDAO().createStaff(select_clause, parameters);
-
-        int member_count = employees.size() + 1;
-        double sales_total = leader.getSales();
-        for (Employee employee : employees) {
-            sales_total += employee.getSales();
-        }
-
-        return new Team(leader, employees, member_count, sales_total);
+    public List<Team> getTeams(String select_clause, List<String> parameters) {
+        return DAO.getDAO().createTeams(select_clause, parameters);
     }
 
-    public List<Project> getProjects(String require_id, Position position) {
-        String select_clause = null;
-        List<String> parameters = new ArrayList<>();
-        switch (position) {
-            case EMPLOYEE -> {
-                select_clause =
-                        "SELECT * FROM Project WHERE leader_id IN (SELECT leader_id FROM Employee WHERE id=?) AND status!='ARCHIVED' AND status !='REVOKED'";
-                parameters.add(require_id);
-            }
-            case LEADER -> {
-                select_clause = "SELECT * FROM Project WHERE leader_id=?";
-                parameters.add(require_id);
-            }
-            case SUPERUSER -> {
-                select_clause = "SELECT * FROM Project";
-            }
-        }
+    public Employee getStaff(String id) {
+        String select_clause = "SELECT * FROM Employee WHERE id=?";
+        List<String> parameters = Arrays.asList(id);
+        List<Employee> staff = DAO.getDAO().createStaff(select_clause, parameters);
 
+        if (staff.size() != 0) {
+            return staff.get(0);
+        } else {
+            return null;
+        }
+    }
+
+    public List<Employee> getStaff(String select_clause, List<String> parameters) {
+        return DAO.getDAO().createStaff(select_clause, parameters);
+    }
+
+    public Employee getEmployee(String id) {
+        Employee employee = this.getStaff(id);
+
+        if (employee != null && employee.getPosition() == Position.EMPLOYEE) {
+            return employee;
+        } else {
+            return null;
+        }
+    }
+
+    public Leader getLeader(String id) {
+        Leader leader = (Leader) this.getStaff(id);
+
+        if (leader != null && leader.getPosition() == Position.LEADER) {
+            return leader;
+        } else {
+            return null;
+        }
+    }
+
+    public Superuser getSuperuser(String id) {
+        Superuser superuser = (Superuser) this.getStaff(id);
+
+        if (superuser != null && superuser.getPosition() == Position.SUPERUSER) {
+            return superuser;
+        } else {
+            return null;
+        }
+    }
+
+    public Project getProject(String code_a, String code_b, LocalDate start) {
+        String select_clause = "SELECT * FROM Project WHERE code_a =? AND code_b=? AND start=?";
+        List<String> parameters =
+                Arrays.asList(code_a, code_b, Project.getDateFormatter().format(start).toString());
+        List<Project> projects = DAO.getDAO().createProjects(select_clause, parameters);
+
+        if (projects.size() != 0) {
+            return projects.get(0);
+        } else {
+            return null;
+        }
+    }
+
+    public List<Project> getProjects(String select_clause, List<String> parameters) {
         return DAO.getDAO().createProjects(select_clause, parameters);
     }
 
-    public List<Project> getProjects(String code_a, String code_b, LocalDate start,
-            String require_id, Position position) {
-        String select_clause = null;
-        List<String> parameters = new ArrayList<>();
-        switch (position) {
-            case EMPLOYEE -> {
-            }
-            case LEADER -> {
-                select_clause =
-                        "SELECT * FROM Project WHERE leader_id=? AND code_a=? AND code_b=? AND start=? AND status!='COMPLETED' AND status!='ARCHIVED' AND status!='REVOKED'";
-                parameters.add(require_id);
-                parameters.add(code_a);
-                parameters.add(code_b);
-                parameters.add(Project.getDateFormatter().format(start));
-            }
-            case SUPERUSER -> {
-                select_clause = "SELECT * FROM Project WHERE code_a=? AND code_b=? AND start=?";
-                parameters.add(code_a);
-                parameters.add(code_b);
-                parameters.add(Project.getDateFormatter().format(start));
-            }
-        }
+    public Object getAttribute(String select_clause, List<String> parameters) {
+        List<Object> attributes = DAO.getDAO().createAttributes(select_clause, parameters);
 
-        return DAO.getDAO().createProjects(select_clause, parameters);
+        if (attributes.size() != 0) {
+            return attributes.get(0);
+        } else {
+            return null;
+        }
+    }
+
+    public List<Object> getAttributes(String select_clause, List<String> parameters) {
+        return DAO.getDAO().createAttributes(select_clause, parameters);
     }
 }
