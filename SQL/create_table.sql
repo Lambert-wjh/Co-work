@@ -1,7 +1,7 @@
 CREATE TABLE IF NOT EXISTS Team (
     leader_id VARCHAR(15) PRIMARY KEY,
     member_count INTEGER NOT NULL,
-    sales_total DOUBLE DEFAULT 0.0
+    sales_total DOUBLE PRECISION(10,2) DEFAULT 0.0
 )CHARSET=utf8;
 
 CREATE TABLE IF NOT EXISTS Employee (
@@ -11,8 +11,8 @@ CREATE TABLE IF NOT EXISTS Employee (
     age INTEGER NOT NULL CHECK (age >= 18 AND age <= 65),
     leader_id VARCHAR(15),
     position ENUM('EMPLOYEE', 'LEADER', 'SUPERUSER') NOT NULL DEFAULT 'EMPLOYEE',
-    sales DOUBLE DEFAULT 0.0,
-    salary DOUBLE,
+    sales DOUBLE PRECISION(10,2) DEFAULT 0.0,
+    salary DOUBLE PRECISION(10,2),
     password VARCHAR(20) NOT NULL DEFAULT '123456',
     FOREIGN KEY(leader_id) REFERENCES Team(leader_id)
 ) CHARSET = utf8;
@@ -22,7 +22,7 @@ CREATE TABLE IF NOT EXISTS Project(
     code_b VARCHAR(30),
     start DATE,
     PRIMARY KEY (code_a, code_b, start),
-    amount DOUBLE NOT NULL,
+    amount DOUBLE PRECISION(10,2) NOT NULL,
     status ENUM('IN_PROGRESS', 'COMPLETED', 'PAUSED', 'ARCHIVED', 'REVOKED') DEFAULT 'IN_PROGRESS' NOT NULL,
     leader_id VARCHAR(15) NOT NULL,
     FOREIGN KEY(leader_id) REFERENCES Team(leader_id)

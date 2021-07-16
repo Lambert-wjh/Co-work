@@ -8,6 +8,7 @@ import java.util.Scanner;
 import java.util.stream.Collectors;
 import database.DAO;
 import entity.Factory;
+import entity.MethodSet;
 import entity.business.Project;
 import entity.enums.Position;
 import entity.enums.Sex;
@@ -125,8 +126,67 @@ public class Superuser extends Leader {
         }
     }
 
+    public void updateSales() {
+        String select_clause = "SELECT leader_id FROM Project WHERE status='COMPLETED'";
+        List<String> parameters = Arrays.asList();
+        List<String> leader_ids = Factory.getFactory().getAttributes(select_clause, parameters)
+                .stream().map(Object::toString).collect(Collectors.toList());
+
+        for (String leader_id : leader_ids) {
+            select_clause = "SELECT member_count FROM Team WHERE leader_id=?";
+            parameters = Arrays.asList(leader_id);
+            int member_count =
+                    ((Integer) Factory.getFactory().getAttribute(select_clause, parameters))
+                            .intValue();
+
+            select_clause =
+                    "SELECT SUM(amount) FROM Project WHERE leader_id=? AND status='COMPLETED' GROUP BY leader_id";
+            double amount = ((Double) Factory.getFactory().getAttribute(select_clause, parameters))
+                    .doubleValue();
+
+            double leader_sales = (amount / member_count) * 1.15;
+            double employee_sales = (amount / member_count);
+
+            select_clause = "UPDATE Employee SET sales=? WHERE id=?";
+            parameters = Arrays.asList(Double.valueOf(leader_sales).toString(), leader_id);
+            if (DAO.getDAO().updateTable(select_clause, parameters) == 0) {
+                System.err.println("Failed to update leader's sales");
+                return;
+            }
+
+            select_clause = "UPDATE Employee SET sales=? WHERE leader_id=?";
+            parameters = Arrays.asList(Double.valueOf(employee_sales).toString(), leader_id);
+            if (DAO.getDAO().updateTable(select_clause, parameters) == 0) {
+                System.err.println("Failed to update employee's sales");
+                return;
+            }
+        }
+
+        select_clause = "SELECT SUM(amount) FROM Project WHERE status='COMPLETED'";
+        parameters = Arrays.asList();
+        double amount = ((Double) Factory.getFactory().getAttribute(select_clause, parameters))
+                .doubleValue();
+        select_clause = "UPDATE Employee SET sales=? WHERE id='AAA00000'";
+        parameters = Arrays.asList(Double.valueOf(amount).toString());
+        if (DAO.getDAO().updateTable(select_clause, parameters) == 0) {
+            System.err.println("Failed to update superuser's sales");
+            return;
+        }
+
+        System.out.println("Update sales successfully, all employees's information is as follows");
+        select_clause = "SELECT * FROM Employee";
+        parameters = Arrays.asList();
+        List<Employee> employees = Factory.getFactory().getStaff(select_clause, parameters);
+        List<List<String>> rows = new ArrayList<>();
+        rows.add(Employee.getFieldName());
+        for (Employee employee : employees) {
+            rows.add(employee.getFieldValue());
+        }
+        System.out.println(MethodSet.formatAsTable(rows));
+    }
+
     private void updateMemberCount() {
-        String select_clause = "SELECT leader_id FROM Team";
+        String select_clause = "SELECT id FROM Employee WHERE position='LEADER'";
         List<String> parameters = Arrays.asList();
         List<String> leader_ids = Factory.getFactory().getAttributes(select_clause, parameters)
                 .stream().map(Object::toString).collect(Collectors.toList());
@@ -223,6 +283,128 @@ public class Superuser extends Leader {
         } else {
             System.out.println("You have cancelled the deletion");
         }
+    }
+
+    public void changeTeamPosition() {
+        Scanner input = new Scanner(System.in);
+        System.out.print("Enter the team leader's ID: ");
+        String leader_id = input.nextLine();
+
+        Employee original_leader = Factory.getFactory().getLeader(leader_id);
+        if (original_leader == null) {
+            System.err.println("Not such leader");
+            return;
+        }
+
+        Team team = Factory.getFactory().getTeam(leader_id);
+        System.out.println("The team's information is as follows");
+        System.out.println(team);
+
+        System.out.print("Enter the ID of the new leader among the above employees: ");
+        String new_leader_id = input.nextLine();
+
+        String select_clause = "SELECT * FROM Employee WHERE id=? AND leader_id=?";
+        List<String> parameters = Arrays.asList(new_leader_id, leader_id);
+        List<Employee> employees = Factory.getFactory().getStaff(select_clause, parameters);
+        if (employees.size() == 0) {
+            System.err.println("Not such employee");
+            return;
+        }
+
+        select_clause = "INSERT INTO Team (leader_id, member_count, sales_total) VALUES (?, ?, ?)";
+        parameters = Arrays.asList(new_leader_id, Integer.valueOf(team.getMemberCount()).toString(),
+                Double.valueOf(team.getSalesTotal()).toString());
+        if (DAO.getDAO().updateTable(select_clause, parameters) == 0) {
+            System.err.println("Failed to insert new team information");
+            return;
+        }
+
+        select_clause = "UPDATE Employee SET leader_id=?, position='EMPLOYEE' WHERE id=?";
+        parameters = Arrays.asList(new_leader_id, leader_id);
+        if (DAO.getDAO().updateTable(select_clause, parameters) == 0) {
+            System.err.println("Failed to modify original leader's information");
+            return;
+        }
+
+        select_clause = "UPDATE Employee SET leader_id='AAA00000', position='LEADER' WHERE id=?";
+        parameters = Arrays.asList(new_leader_id);
+        if (DAO.getDAO().updateTable(select_clause, parameters) == 0) {
+            System.err.println("Failed to modify new leader's information");
+            return;
+        }
+
+        select_clause = "UPDATE Employee SET leader_id=? WHERE leader_id=?";
+        parameters = Arrays.asList(new_leader_id, leader_id);
+        if (DAO.getDAO().updateTable(select_clause, parameters) == 0) {
+            System.err.println("Failed to modify other employees' information");
+            return;
+        }
+
+        select_clause = "UPDATE Project SET leader_id=? WHERE leader_id=?";
+        parameters = Arrays.asList(new_leader_id, leader_id);
+        if (DAO.getDAO().updateTable(select_clause, parameters) == 0) {
+            System.err.println("Failed to modify project's information");
+            return;
+        }
+
+        select_clause = "DELETE FROM Team WHERE leader_id=?";
+        parameters = Arrays.asList(leader_id);
+        if (DAO.getDAO().updateTable(select_clause, parameters) == 0) {
+            System.err.println("Failed to delete original team's record");
+            return;
+        }
+
+        Team new_team = Factory.getFactory().getTeam(new_leader_id);
+        System.out.println("Now the team's information is as follows");
+        System.out.println(new_team);
+    }
+
+    public void transferEmployee() {
+        Scanner input = new Scanner(System.in);
+        System.out.print("Enter the employee's ID: ");
+        String id = input.nextLine();
+
+        Employee employee = Factory.getFactory().getEmployee(id);
+        if (employee == null) {
+            System.err.println("No such employee");
+            return;
+        }
+
+        String select_clause = "SELECT id FROM Employee WHERE position='LEADER'";
+        List<String> parameters = Arrays.asList();
+        List<String> leader_ids = Factory.getFactory().getAttributes(select_clause, parameters)
+                .stream().map(Object::toString).collect(Collectors.toList());
+
+        List<Leader> leaders = new ArrayList<>();
+        for (String leader_id : leader_ids) {
+            leaders.add(Factory.getFactory().getLeader(leader_id));
+        }
+        System.out.println("All leaders' information is as follows");
+        List<List<String>> rows = new ArrayList<>();
+        rows.add(Leader.getFieldName());
+        for (Leader leader : leaders) {
+            rows.add(leader.getFieldValue());
+        }
+        System.out.println(MethodSet.formatAsTable(rows));
+
+        System.out.print("Enter the ID of the leader among the above leaders: ");
+        String leader_id = input.nextLine();
+
+        Leader leader = Factory.getFactory().getLeader(leader_id);
+        if (leader == null) {
+            System.out.println("No such leader");
+            return;
+        }
+
+        select_clause = "UPDATE Employee SET leader_id=? WHERE id=?";
+        parameters = Arrays.asList(leader_id, id);
+        if (DAO.getDAO().updateTable(select_clause, parameters) == 0) {
+            System.err.println("Failed to update the employee's information");
+            return;
+        }
+
+        this.updateMemberCount();
+        System.out.println("Transfer successfully");
     }
 
     public void createNewProject() {

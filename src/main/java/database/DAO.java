@@ -164,7 +164,7 @@ public class DAO {
                     ResultSetMetaData result_set_meta = result_set.getMetaData();
                     while (result_set.next()) {
                         for (int i = 0; i < result_set_meta.getColumnCount(); i++) {
-                            attributes.add(result_set.getObject(i));
+                            attributes.add(result_set.getObject(i + 1));
                         }
                     }
                 }
