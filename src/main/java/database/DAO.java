@@ -7,7 +7,6 @@ import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
@@ -61,10 +60,9 @@ public class DAO {
                         double sales_total = result_set.getDouble("sales_total");
 
                         Leader leader = (Leader) createStaff("SELECT * FROM Employee WHERE id=?",
-                                Arrays.asList(leader_id)).get(0);
-                        List<Employee> employees =
-                                createStaff("SELECT * FROM Employee WHERE leader_id=?",
-                                        Arrays.asList(leader_id));
+                                List.of(leader_id)).get(0);
+                        List<Employee> employees = createStaff(
+                                "SELECT * FROM Employee WHERE leader_id=?", List.of(leader_id));
 
                         teams.add(new Team(leader, employees, member_count, sales_total));
                     }

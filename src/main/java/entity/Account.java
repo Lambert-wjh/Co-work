@@ -1,7 +1,6 @@
 package entity;
 
 import java.io.Console;
-import java.util.Arrays;
 import java.util.List;
 import database.DAO;
 
@@ -42,7 +41,7 @@ public class Account {
         this.password = new_password;
 
         String update_clause = "UPDATE Employee SET password=? WHERE id=?";
-        List<String> parameters = Arrays.asList(this.password, this.account);
+        List<String> parameters = List.of(this.password, this.account);
 
         if (DAO.getDAO().updateTable(update_clause, parameters) == 0) {
             System.err.println("Failed to change password");
