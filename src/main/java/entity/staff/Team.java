@@ -33,8 +33,7 @@ public class Team {
                 .append("The team member's information is as follows\n");
 
         List<List<String>> rows = new ArrayList<>();
-        rows.add(Employee.getFieldName());
-        rows.add(this.leader.getFieldValue());
+        rows.addAll(List.of(Employee.getFieldName(), this.leader.getFieldValue()));
         for (Employee employee : this.employees) {
             rows.add(employee.getFieldValue());
         }

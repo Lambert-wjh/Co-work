@@ -1,7 +1,6 @@
 package entity.staff;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import entity.Account;
 import entity.MethodSet;
@@ -47,19 +46,19 @@ public class Employee extends Person {
 
     @Override
     public String toString() {
-        List<List<String>> rows = Arrays.asList(Employee.getFieldName(), this.getFieldValue());
+        List<List<String>> rows = new ArrayList<>();
+        rows.addAll(List.of(Employee.getFieldName(), this.getFieldValue()));
 
         return MethodSet.formatAsTable(rows);
     }
 
     public static List<String> getFieldName() {
-        return Arrays.asList("ID", "Name", "Sex", "Age", "Position", "Sales", "Salary");
+        return List.of("ID", "Name", "Sex", "Age", "Position", "Sales", "Salary");
     }
 
     public List<String> getFieldValue() {
-        return Arrays.asList(this.id, this.name, this.sex.name(),
-                Integer.valueOf(this.age).toString(), this.position.name(),
-                Double.valueOf(this.sales).toString(), Double.valueOf(this.salary).toString());
+        return List.of(this.id, this.name, this.sex.name(), String.valueOf(this.age),
+                this.position.name(), String.valueOf(this.sales), String.valueOf(this.salary));
     }
 
     public void changePassword() {
@@ -72,20 +71,19 @@ public class Employee extends Person {
 
     public void checkProjectInfo() {
         String select_clause = null;
-        List<String> parameters = null;
+        List<String> parameters = new ArrayList<>();
         switch (this.position) {
             case EMPLOYEE -> {
                 select_clause =
                         "SELECT * FROM Project WHERE leader_id IN (SELECT leader_id FROM Employee WHERE id=?) AND status!='ARCHIVED' AND status !='REVOKED'";
-                parameters = Arrays.asList(this.id);
+                parameters.add(this.id);
             }
             case LEADER -> {
                 select_clause = "SELECT * FROM Project WHERE leader_id=?";
-                parameters = Arrays.asList(this.id);
+                parameters.add(this.id);
             }
             case SUPERUSER -> {
                 select_clause = "SELECT * FROM Project";
-                parameters = Arrays.asList();
             }
         }
         List<Project> projects = Factory.getFactory().getProjects(select_clause, parameters);

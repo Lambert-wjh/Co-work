@@ -3,7 +3,6 @@ package entity.business;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import entity.MethodSet;
 import entity.enums.Status;
@@ -59,19 +58,18 @@ public class Project {
     @Override
     public String toString() {
         List<List<String>> rows = new ArrayList<>();
-        rows.add(Project.getFieldName());
-        rows.add(this.getFieldValue());
+        rows.addAll(List.of(Project.getFieldName(), this.getFieldValue()));
 
         return MethodSet.formatAsTable(rows);
     }
 
     public static List<String> getFieldName() {
-        return Arrays.asList("Company_A_Code", "Company_B_Code", "Start date", "Amount", "Status",
+        return List.of("Company_A_Code", "Company_B_Code", "Start date", "Amount", "Status",
                 "Leader's ID");
     }
 
     public List<String> getFieldValue() {
-        return Arrays.asList(this.code_a, this.code_b, this.date_formatter.format(start).toString(),
-                Double.valueOf(this.amount).toString(), this.status.name(), this.leader_id);
+        return List.of(this.code_a, this.code_b, this.date_formatter.format(start).toString(),
+                String.valueOf(this.amount), this.status.name(), this.leader_id);
     }
 }

@@ -1,7 +1,6 @@
 package entity;
 
 import java.time.LocalDate;
-import java.util.Arrays;
 import java.util.List;
 import database.DAO;
 import entity.business.Project;
@@ -22,7 +21,7 @@ public class Factory {
 
     public Team getTeam(String leader_id) {
         String select_clause = "SELECT * FROM Team WHERE leader_id=?";
-        List<String> parameters = Arrays.asList(leader_id);
+        List<String> parameters = List.of(leader_id);
         List<Team> teams = DAO.getDAO().createTeams(select_clause, parameters);
 
         if (teams.size() != 0) {
@@ -38,7 +37,7 @@ public class Factory {
 
     public Employee getStaff(String id) {
         String select_clause = "SELECT * FROM Employee WHERE id=?";
-        List<String> parameters = Arrays.asList(id);
+        List<String> parameters = List.of(id);
         List<Employee> staff = DAO.getDAO().createStaff(select_clause, parameters);
 
         if (staff.size() != 0) {
@@ -84,8 +83,7 @@ public class Factory {
 
     public Project getProject(String code_a, String code_b, LocalDate start) {
         String select_clause = "SELECT * FROM Project WHERE code_a =? AND code_b=? AND start=?";
-        List<String> parameters =
-                Arrays.asList(code_a, code_b, Project.getDateFormatter().format(start).toString());
+        List<String> parameters = List.of(code_a, code_b, start.format(Project.getDateFormatter()));
         List<Project> projects = DAO.getDAO().createProjects(select_clause, parameters);
 
         if (projects.size() != 0) {

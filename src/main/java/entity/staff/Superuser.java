@@ -2,7 +2,6 @@ package entity.staff;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
 import java.util.stream.Collectors;
@@ -33,7 +32,6 @@ public class Superuser extends Leader {
         System.out.println("The staff's information is as follows");
         System.out.println(staff);
 
-        String temp_input = null;
         String new_id = staff.getId();
         String new_name = staff.getName();
         Sex new_sex = staff.getSex();
@@ -41,7 +39,7 @@ public class Superuser extends Leader {
         String new_password = staff.getAccount().getPassword();
 
         System.out.print("Enter new ID (Please enter N if you don't want to change it) : ");
-        temp_input = input.nextLine();
+        String temp_input = input.nextLine();
         new_id = temp_input.equals("N") ? new_id : temp_input;
         System.out.print("Enter new name (Please enter N if you don't want to change it) : ");
         temp_input = input.nextLine();
@@ -60,15 +58,15 @@ public class Superuser extends Leader {
 
         String update_clause =
                 "UPDATE Employee SET id=?, name=?, sex=?, age=?, password=? WHERE id=?";
-        List<String> parameters = Arrays.asList(new_id, new_name, new_sex.name(),
-                Integer.valueOf(new_age).toString(), new_password, staff.getId());
+        List<String> parameters = List.of(new_id, new_name, new_sex.name(), String.valueOf(new_age),
+                new_password, staff.getId());
         if (DAO.getDAO().updateTable(update_clause, parameters) == 0) {
             System.err.println("Failed to modify the staff information");
-            staff = Factory.getFactory().getStaff(id);
-            System.out.println("The staff's information is as follows");
-            System.out.println(staff);
         } else {
-            System.out.println("Modified the staff information successfully");
+            System.out.println(
+                    "Modified the staff information successfully, the staff's information is as follows");
+            staff = Factory.getFactory().getStaff(id);
+            System.out.println(staff);
         }
     }
 
@@ -84,8 +82,7 @@ public class Superuser extends Leader {
         int age = input.nextInt();
 
         String update_clause = "INSERT INTO Employee (id, name, sex, age) VALUES (?, ?, ?, ?)";
-        List<String> parameters =
-                Arrays.asList(id, name, sex.name(), Integer.valueOf(age).toString());
+        List<String> parameters = List.of(id, name, sex.name(), String.valueOf(age));
 
         if (DAO.getDAO().updateTable(update_clause, parameters) == 0) {
             System.err.println("Failed to create a new staff");
@@ -114,7 +111,7 @@ public class Superuser extends Leader {
         String deletion = input.nextLine();
         if (deletion.equals("Y")) {
             String update_clause = "DELETE FROM Employee WHERE id=?";
-            List<String> parameters = Arrays.asList(id);
+            List<String> parameters = List.of(id);
 
             if (DAO.getDAO().updateTable(update_clause, parameters) == 0) {
                 System.err.println("Failed to delete the staff's record");
@@ -128,34 +125,40 @@ public class Superuser extends Leader {
 
     public void updateSales() {
         String select_clause = "SELECT leader_id FROM Project WHERE status='COMPLETED'";
-        List<String> parameters = Arrays.asList();
+        List<String> parameters = List.of();
         List<String> leader_ids = Factory.getFactory().getAttributes(select_clause, parameters)
                 .stream().map(Object::toString).collect(Collectors.toList());
 
         for (String leader_id : leader_ids) {
             select_clause = "SELECT member_count FROM Team WHERE leader_id=?";
-            parameters = Arrays.asList(leader_id);
+            parameters = List.of(leader_id);
             int member_count =
-                    ((Integer) Factory.getFactory().getAttribute(select_clause, parameters))
-                            .intValue();
+                    (Integer) Factory.getFactory().getAttribute(select_clause, parameters);
+
 
             select_clause =
                     "SELECT SUM(amount) FROM Project WHERE leader_id=? AND status='COMPLETED' GROUP BY leader_id";
-            double amount = ((Double) Factory.getFactory().getAttribute(select_clause, parameters))
-                    .doubleValue();
+            double amount = (Double) Factory.getFactory().getAttribute(select_clause, parameters);
+
+            select_clause = "UPDATE Team SET sales_total=? WHERE leader_id=?";
+            parameters = List.of(String.valueOf(amount), leader_id);
+            if (DAO.getDAO().updateTable(select_clause, parameters) == 0) {
+                System.err.println("Failed to update Team's sales");
+                return;
+            }
 
             double leader_sales = (amount / member_count) * 1.15;
             double employee_sales = (amount / member_count);
 
             select_clause = "UPDATE Employee SET sales=? WHERE id=?";
-            parameters = Arrays.asList(Double.valueOf(leader_sales).toString(), leader_id);
+            parameters = List.of(String.valueOf(leader_sales), leader_id);
             if (DAO.getDAO().updateTable(select_clause, parameters) == 0) {
                 System.err.println("Failed to update leader's sales");
                 return;
             }
 
             select_clause = "UPDATE Employee SET sales=? WHERE leader_id=?";
-            parameters = Arrays.asList(Double.valueOf(employee_sales).toString(), leader_id);
+            parameters = List.of(String.valueOf(employee_sales), leader_id);
             if (DAO.getDAO().updateTable(select_clause, parameters) == 0) {
                 System.err.println("Failed to update employee's sales");
                 return;
@@ -163,11 +166,10 @@ public class Superuser extends Leader {
         }
 
         select_clause = "SELECT SUM(amount) FROM Project WHERE status='COMPLETED'";
-        parameters = Arrays.asList();
-        double amount = ((Double) Factory.getFactory().getAttribute(select_clause, parameters))
-                .doubleValue();
+        parameters = List.of();
+        double amount = (Double) Factory.getFactory().getAttribute(select_clause, parameters);
         select_clause = "UPDATE Employee SET sales=? WHERE id='AAA00000'";
-        parameters = Arrays.asList(Double.valueOf(amount).toString());
+        parameters = List.of(String.valueOf(amount));
         if (DAO.getDAO().updateTable(select_clause, parameters) == 0) {
             System.err.println("Failed to update superuser's sales");
             return;
@@ -175,7 +177,7 @@ public class Superuser extends Leader {
 
         System.out.println("Update sales successfully, all employees's information is as follows");
         select_clause = "SELECT * FROM Employee";
-        parameters = Arrays.asList();
+        parameters = List.of();
         List<Employee> employees = Factory.getFactory().getStaff(select_clause, parameters);
         List<List<String>> rows = new ArrayList<>();
         rows.add(Employee.getFieldName());
@@ -187,17 +189,17 @@ public class Superuser extends Leader {
 
     private void updateMemberCount() {
         String select_clause = "SELECT id FROM Employee WHERE position='LEADER'";
-        List<String> parameters = Arrays.asList();
+        List<String> parameters = List.of();
         List<String> leader_ids = Factory.getFactory().getAttributes(select_clause, parameters)
                 .stream().map(Object::toString).collect(Collectors.toList());
 
         for (String leader_id : leader_ids) {
             select_clause = "SELECT * FROM Employee WHERE leader_id=?";
-            parameters = Arrays.asList(leader_id);
+            parameters = List.of(leader_id);
             List<Employee> employees = Factory.getFactory().getStaff(select_clause, parameters);
 
             select_clause = "UPDATE Team SET member_count=? WHERE leader_id=?";
-            parameters = Arrays.asList(Integer.valueOf(employees.size() + 1).toString(), leader_id);
+            parameters = List.of(String.valueOf(employees.size() + 1), leader_id);
             DAO.getDAO().updateTable(select_clause, parameters);
         }
     }
@@ -217,11 +219,11 @@ public class Superuser extends Leader {
         }
 
         String update_clause = "INSERT INTO Team (leader_id, member_count) VALUES (?, ?)";
-        List<String> parameters = Arrays.asList(pre_leader.getId(), Integer.valueOf(1).toString());
+        List<String> parameters = List.of(leader_id, String.valueOf(1));
         DAO.getDAO().updateTable(update_clause, parameters);
 
         update_clause = "UPDATE Employee SET leader_id='AAA00000', position='LEADER' WHERE id=?";
-        parameters = Arrays.asList(pre_leader.getId());
+        parameters = List.of(leader_id);
         DAO.getDAO().updateTable(update_clause, parameters);
 
         String temp_input = "Y";
@@ -237,7 +239,7 @@ public class Superuser extends Leader {
                 continue;
             } else {
                 update_clause = "UPDATE Employee SET leader_id=? WHERE id=?";
-                parameters = Arrays.asList(pre_leader.getId(), employee.getId());
+                parameters = List.of(leader_id, id);
 
                 DAO.getDAO().updateTable(update_clause, parameters);
             }
@@ -245,7 +247,7 @@ public class Superuser extends Leader {
             temp_input = input.nextLine();
         }
 
-        Team team = Factory.getFactory().getTeam(pre_leader.getId());
+        Team team = Factory.getFactory().getTeam(leader_id);
         System.out.println("The team's information is as follows");
         System.out.println(team);
 
@@ -271,7 +273,7 @@ public class Superuser extends Leader {
         String deletion = input.nextLine();
         if (deletion.equals("Y")) {
             String update_clause = "UPDATE Employee SET leader_id=null WHERE leader_id=?";
-            List<String> parameters = Arrays.asList(leader_id);
+            List<String> parameters = List.of(leader_id);
             DAO.getDAO().updateTable(update_clause, parameters);
 
             update_clause = "UPDATE Employee SET leader_id=null, position='EMPLOYEE' WHERE id=?";
@@ -304,7 +306,7 @@ public class Superuser extends Leader {
         String new_leader_id = input.nextLine();
 
         String select_clause = "SELECT * FROM Employee WHERE id=? AND leader_id=?";
-        List<String> parameters = Arrays.asList(new_leader_id, leader_id);
+        List<String> parameters = List.of(new_leader_id, leader_id);
         List<Employee> employees = Factory.getFactory().getStaff(select_clause, parameters);
         if (employees.size() == 0) {
             System.err.println("Not such employee");
@@ -312,43 +314,43 @@ public class Superuser extends Leader {
         }
 
         select_clause = "INSERT INTO Team (leader_id, member_count, sales_total) VALUES (?, ?, ?)";
-        parameters = Arrays.asList(new_leader_id, Integer.valueOf(team.getMemberCount()).toString(),
-                Double.valueOf(team.getSalesTotal()).toString());
+        parameters = List.of(new_leader_id, String.valueOf(team.getMemberCount()),
+                String.valueOf(team.getSalesTotal()));
         if (DAO.getDAO().updateTable(select_clause, parameters) == 0) {
             System.err.println("Failed to insert new team information");
             return;
         }
 
         select_clause = "UPDATE Employee SET leader_id=?, position='EMPLOYEE' WHERE id=?";
-        parameters = Arrays.asList(new_leader_id, leader_id);
+        parameters = List.of(new_leader_id, leader_id);
         if (DAO.getDAO().updateTable(select_clause, parameters) == 0) {
             System.err.println("Failed to modify original leader's information");
             return;
         }
 
         select_clause = "UPDATE Employee SET leader_id='AAA00000', position='LEADER' WHERE id=?";
-        parameters = Arrays.asList(new_leader_id);
+        parameters = List.of(new_leader_id);
         if (DAO.getDAO().updateTable(select_clause, parameters) == 0) {
             System.err.println("Failed to modify new leader's information");
             return;
         }
 
         select_clause = "UPDATE Employee SET leader_id=? WHERE leader_id=?";
-        parameters = Arrays.asList(new_leader_id, leader_id);
+        parameters = List.of(new_leader_id, leader_id);
         if (DAO.getDAO().updateTable(select_clause, parameters) == 0) {
             System.err.println("Failed to modify other employees' information");
             return;
         }
 
         select_clause = "UPDATE Project SET leader_id=? WHERE leader_id=?";
-        parameters = Arrays.asList(new_leader_id, leader_id);
+        parameters = List.of(new_leader_id, leader_id);
         if (DAO.getDAO().updateTable(select_clause, parameters) == 0) {
             System.err.println("Failed to modify project's information");
             return;
         }
 
         select_clause = "DELETE FROM Team WHERE leader_id=?";
-        parameters = Arrays.asList(leader_id);
+        parameters = List.of(leader_id);
         if (DAO.getDAO().updateTable(select_clause, parameters) == 0) {
             System.err.println("Failed to delete original team's record");
             return;
@@ -371,7 +373,7 @@ public class Superuser extends Leader {
         }
 
         String select_clause = "SELECT id FROM Employee WHERE position='LEADER'";
-        List<String> parameters = Arrays.asList();
+        List<String> parameters = List.of();
         List<String> leader_ids = Factory.getFactory().getAttributes(select_clause, parameters)
                 .stream().map(Object::toString).collect(Collectors.toList());
 
@@ -397,7 +399,7 @@ public class Superuser extends Leader {
         }
 
         select_clause = "UPDATE Employee SET leader_id=? WHERE id=?";
-        parameters = Arrays.asList(leader_id, id);
+        parameters = List.of(leader_id, id);
         if (DAO.getDAO().updateTable(select_clause, parameters) == 0) {
             System.err.println("Failed to update the employee's information");
             return;
@@ -422,7 +424,7 @@ public class Superuser extends Leader {
 
         String update_clause =
                 "INSERT INTO Project (code_a, code_b, start, amount, leader_id) VALUES (?, ?, ?, ?, ?)";
-        List<String> parameters = Arrays.asList(code_a, code_b, start, amount, leader_id);
+        List<String> parameters = List.of(code_a, code_b, start, amount, leader_id);
 
         if (DAO.getDAO().updateTable(update_clause, parameters) == 0) {
             System.err.println("Failed to create a new project");
@@ -460,7 +462,7 @@ public class Superuser extends Leader {
         String deletion = input.nextLine();
         if (deletion.equals("Y")) {
             String update_clause = "DELETE FROM Project WHERE code_a =? AND code_b=? AND start=?";
-            List<String> parameters = Arrays.asList(code_a, code_b, start);
+            List<String> parameters = List.of(code_a, code_b, start);
 
             if (DAO.getDAO().updateTable(update_clause, parameters) == 0) {
                 System.err.println("Failed to delete the project's record");
@@ -513,7 +515,6 @@ public class Superuser extends Leader {
         System.out.println("The project's information is as follows");
         System.out.println(project);
 
-        String temp_input = null;
         String new_code_a = project.getCodeA();
         String new_code_b = project.getCodeB();
         LocalDate new_start = project.getStartDate();
@@ -522,7 +523,7 @@ public class Superuser extends Leader {
 
         System.out.print(
                 "Enter new company A's code (Please enter N if you don't want to change it) : ");
-        temp_input = input.nextLine();
+        String temp_input = input.nextLine();
         new_code_a = temp_input.equals("N") ? new_code_a : temp_input;
         System.out.print(
                 "Enter new company B's code (Please enter N if you don't want to change it) : ");
@@ -543,17 +544,17 @@ public class Superuser extends Leader {
 
         String update_clause =
                 "UPDATE Project SET code_a=?, code_b=?, start=?, amount=?, leader_id=? WHERE code_a=? AND code_b=? AND start=?";
-        List<String> parameters = Arrays.asList(new_code_a, new_code_b,
-                Project.getDateFormatter().format(new_start), Double.valueOf(new_amount).toString(),
+        List<String> parameters = List.of(new_code_a, new_code_b,
+                new_start.format(Project.getDateFormatter()), String.valueOf(new_amount),
                 new_leader_id, project.getCodeA(), project.getCodeB(),
-                Project.getDateFormatter().format(project.getStartDate()));
+                project.getStartDate().format(Project.getDateFormatter()));
 
         if (DAO.getDAO().updateTable(update_clause, parameters) == 0) {
             System.err.println("Failed to update the project's information");
         } else {
-            System.out.println("Update specified project's information successfully");
+            System.out.println(
+                    "Update specified project's information successfully, the project's information is as follows");
             project = Factory.getFactory().getProject(new_code_a, new_code_b, new_start);
-            System.out.println("The project's information is as follows");
             System.out.println(project);
         }
     }

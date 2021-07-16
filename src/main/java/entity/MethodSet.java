@@ -3,9 +3,23 @@ package entity;
 import java.io.Console;
 import java.io.IOException;
 import java.io.Reader;
+import java.util.ArrayList;
 import java.util.List;
+import org.jline.terminal.Terminal;
+import org.jline.terminal.TerminalBuilder;
 
 public class MethodSet {
+    private static final Terminal terminal;
+    static {
+        Terminal temp = null;
+        try {
+            temp = TerminalBuilder.terminal();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        terminal = temp;
+    }
+
     public static void clearScreen() {
         System.out.print("\033[H\033[2J");
         System.out.flush();
@@ -42,5 +56,36 @@ public class MethodSet {
                     .append("\n");
         }
         return table.toString();
+    }
+
+    public static String formatMenu(List<String> menu) {
+        final int COLUMN = terminal.getWidth();
+
+        int max_length = menu.get(0).length();
+        for (String item : menu) {
+            max_length = Math.max(max_length, item.length());
+        }
+        final int WIDTH = (COLUMN + max_length) / 2;
+
+        StringBuilder line_separator = new StringBuilder();
+        line_separator.append('+');
+        for (int i = 0; i < max_length + 2; i++) {
+            line_separator.append('-');
+        }
+        line_separator.append('+');
+
+        List<String> appended_menu = new ArrayList<>();
+        for (String item : menu) {
+            appended_menu.add(String.format("| %-" + max_length + "s |", item));
+        }
+
+        StringBuilder formated_menu = new StringBuilder();
+        formated_menu.append(String.format("%" + WIDTH + "s", line_separator)).append("\n");
+        for (String item : appended_menu) {
+            formated_menu.append(String.format("%" + WIDTH + "s", item)).append("\n");
+            formated_menu.append(String.format("%" + WIDTH + "s", line_separator)).append("\n");
+        }
+
+        return formated_menu.toString();
     }
 }

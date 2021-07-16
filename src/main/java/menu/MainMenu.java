@@ -27,9 +27,6 @@ public class MainMenu {
      */
     public void start() {
         Employee user = Login();
-        if (user == null) {
-            return;
-        }
 
         switch (user.getPosition()) {
             case EMPLOYEE -> {
@@ -65,9 +62,12 @@ public class MainMenu {
 
         Employee user = Factory.getFactory().getStaff(input_account);
 
-        if (!user.getAccount().verifyPassword(input_password)) {
+        if (user == null) {
+            System.err.println("No such staff");
+            System.exit(1);
+        } else if (!user.getAccount().verifyPassword(input_password)) {
             System.err.println("The password is wrong");
-            return null;
+            System.exit(1);
         }
 
         return user;
