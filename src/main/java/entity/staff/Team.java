@@ -17,6 +17,14 @@ public class Team {
         this.sales_total = sales_total;
     }
 
+    public int getMemberCount() {
+        return this.member_count;
+    }
+
+    public double getSalesTotal() {
+        return this.sales_total;
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();

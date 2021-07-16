@@ -49,6 +49,7 @@ public class SuperuserMenu {
                         user.modifyStaffInfo();
                     }
                     case 3 -> {
+                        user.updateSales();
                     }
                     case 4 -> {
                         user.createNewStaff();
@@ -76,8 +77,10 @@ public class SuperuserMenu {
                         user.createNewTeam();
                     }
                     case 2 -> {
+                        user.changeTeamPosition();
                     }
                     case 3 -> {
+                        user.transferEmployee();
                     }
                     case 4 -> {
                         user.deleteTeamRecord();
