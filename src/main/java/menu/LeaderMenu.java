@@ -1,5 +1,6 @@
 package menu;
 
+import java.util.List;
 import java.util.Scanner;
 import entity.MethodSet;
 import entity.staff.Leader;
@@ -15,10 +16,11 @@ public class LeaderMenu {
 
         do {
             MethodSet.clearScreen();
-            System.out.println("1. Personal related operations");
-            System.out.println("2. Project-related operations");
-            System.out.println("3. Team-related operations");
-            System.out.println("0. Exit");
+            List<String> menu = List.of("1. Personal related operations",
+                    "2. Project-related operations", "3. Team-related operations", "0. Exit");
+            System.out.print(MethodSet.formatMenu(menu));
+            System.out.println();
+            System.out.println();
             System.out.print("Enter selection: ");
             selection = input.nextInt();
             secondMenu(user, selection);
@@ -33,9 +35,11 @@ public class LeaderMenu {
         if (first_selection == 1) {
             do {
                 MethodSet.clearScreen();
-                System.out.println("1. Change account password");
-                System.out.println("2. Check personal information");
-                System.out.println("0. Back to the parent menu");
+                List<String> menu = List.of("1. Change account password",
+                        "2. Check personal information", "0. Back to the parent menu");
+                System.out.print(MethodSet.formatMenu(menu));
+                System.out.println();
+                System.out.println();
                 System.out.print("Enter selection: ");
                 selection = input.nextInt();
                 switch (selection) {
@@ -53,9 +57,11 @@ public class LeaderMenu {
         } else if (first_selection == 2) {
             do {
                 MethodSet.clearScreen();
-                System.out.println("1. Check project information");
-                System.out.println("2. Update the project status");
-                System.out.println("0. Back to the parent menu");
+                List<String> menu = List.of("1. Check project information",
+                        "2. Update the project status", "0. Back to the parent menu");
+                System.out.print(MethodSet.formatMenu(menu));
+                System.out.println();
+                System.out.println();
                 System.out.print("Enter selection: ");
                 selection = input.nextInt();
                 switch (selection) {
@@ -73,8 +79,11 @@ public class LeaderMenu {
         } else if (first_selection == 3) {
             do {
                 MethodSet.clearScreen();
-                System.out.println("1. Check team information");
-                System.out.println("0. Back to the parent menu");
+                List<String> menu =
+                        List.of("1. Check team information", "0. Back to the parent menu");
+                System.out.print(MethodSet.formatMenu(menu));
+                System.out.println();
+                System.out.println();
                 System.out.print("Enter selection: ");
                 selection = input.nextInt();
                 switch (selection) {
