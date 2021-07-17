@@ -21,7 +21,7 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/ma
         <dependency>
             <groupId>com.zaxxer</groupId>
             <artifactId>HikariCP</artifactId>
-            <version>4.0.3</version>
+            <version>5.0.0</version>
         </dependency>
         <dependency>
             <groupId>org.slf4j</groupId>
@@ -52,9 +52,47 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/ma
                             <transformers>
                                 <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
 
-                                    <Main-Class>Main</Main-Class>
+                                    <Main-Class>ssdut.cli.headhunterms.Main</Main-Class>
                                 </transformer>
                             </transformers>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <artifactId>
+                plantuml-generator-maven-plugin</artifactId>
+                <groupId>de.elnarion.maven</groupId>
+                <version>1.2.0</version>
+                <executions>
+                    <execution>
+                        <id>generate-simple-diagram</id>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                        <phase>generate-test-sources</phase>
+                        <configuration>
+                            <outputFilename>
+                            classUML.txt</outputFilename>
+                            <scanPackages>
+                                <scanPackage>
+                                ssdut.cli.headhunterms</scanPackage>
+                            </scanPackages>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>com.coveo</groupId>
+                <artifactId>fmt-maven-plugin</artifactId>
+                <version>2.11</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>format</goal>
+                        </goals>
+                        <configuration>
+                            <style>google</style>
                         </configuration>
                     </execution>
                 </executions>

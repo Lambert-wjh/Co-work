@@ -6,8 +6,9 @@
  *
  * @FEMALE : Gender is female.
  */
-package entity.enums;
+package ssdut.cli.headhunterms.entity.enums;
 
 public enum Sex {
-    MALE, FEMALE;
+  MALE,
+  FEMALE;
 }
