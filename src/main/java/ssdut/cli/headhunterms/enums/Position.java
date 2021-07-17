@@ -11,7 +11,7 @@
 package ssdut.cli.headhunterms.enums;
 
 public enum Position {
-  EMPLOYEE,
-  LEADER,
-  SUPERUSER;
+    EMPLOYEE,
+    LEADER,
+    SUPERUSER;
 }

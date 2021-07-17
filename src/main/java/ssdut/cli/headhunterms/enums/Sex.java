@@ -9,6 +9,6 @@
 package ssdut.cli.headhunterms.enums;
 
 public enum Sex {
-  MALE,
-  FEMALE;
+    MALE,
+    FEMALE;
 }

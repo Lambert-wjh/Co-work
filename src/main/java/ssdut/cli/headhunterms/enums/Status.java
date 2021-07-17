@@ -15,9 +15,9 @@
 package ssdut.cli.headhunterms.enums;
 
 public enum Status {
-  IN_PROGRESS,
-  PAUSED,
-  COMPLETED,
-  ARCHIVED,
-  REVOKED
+    IN_PROGRESS,
+    PAUSED,
+    COMPLETED,
+    ARCHIVED,
+    REVOKED
 }
