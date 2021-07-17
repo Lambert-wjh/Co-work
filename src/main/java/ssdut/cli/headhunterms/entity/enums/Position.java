@@ -8,8 +8,10 @@
  *
  * @SUPERUSER : Super Administrator, have the authority to manage the entire company.
  */
-package entity.enums;
+package ssdut.cli.headhunterms.entity.enums;
 
 public enum Position {
-    EMPLOYEE, LEADER, SUPERUSER;
+  EMPLOYEE,
+  LEADER,
+  SUPERUSER;
 }
