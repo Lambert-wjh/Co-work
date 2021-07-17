@@ -1,3 +1,7 @@
+/*
+ * This file is part of the account in the HeadhunterMS project. It contains all account-like data
+ * structures and account password-related functions.
+ */
 package entity;
 
 import java.io.Console;
