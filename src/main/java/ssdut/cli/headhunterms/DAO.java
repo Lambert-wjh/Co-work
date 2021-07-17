@@ -2,7 +2,7 @@
  * This file is the database part of the HeadhunterMS project. It is Data Access Object. And it
  * contains all functions of DAO.
  */
-package ssdut.cli.headhunterms.database;
+package ssdut.cli.headhunterms;
 
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
@@ -14,14 +14,14 @@ import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-import ssdut.cli.headhunterms.entity.business.Project;
-import ssdut.cli.headhunterms.entity.enums.Position;
-import ssdut.cli.headhunterms.entity.enums.Sex;
-import ssdut.cli.headhunterms.entity.enums.Status;
-import ssdut.cli.headhunterms.entity.staff.Employee;
-import ssdut.cli.headhunterms.entity.staff.Leader;
-import ssdut.cli.headhunterms.entity.staff.Superuser;
-import ssdut.cli.headhunterms.entity.staff.Team;
+import ssdut.cli.headhunterms.business.Project;
+import ssdut.cli.headhunterms.enums.Position;
+import ssdut.cli.headhunterms.enums.Sex;
+import ssdut.cli.headhunterms.enums.Status;
+import ssdut.cli.headhunterms.staff.Employee;
+import ssdut.cli.headhunterms.staff.Leader;
+import ssdut.cli.headhunterms.staff.Superuser;
+import ssdut.cli.headhunterms.staff.Team;
 
 /*
  * To reduce the performance overhead associated with connecting to the database, we use jdbc

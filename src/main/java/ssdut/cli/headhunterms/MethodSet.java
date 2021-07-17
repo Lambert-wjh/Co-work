@@ -2,7 +2,7 @@
  * This file is part of the Auxiliary Methods in the HeadhunterMS project. It contains all Auxiliary
  * Functions to help the other functions work better.
  */
-package ssdut.cli.headhunterms.entity;
+package ssdut.cli.headhunterms;
 
 import java.io.Console;
 import java.io.IOException;

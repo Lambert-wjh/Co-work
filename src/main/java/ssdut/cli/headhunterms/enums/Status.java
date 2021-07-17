@@ -12,7 +12,7 @@
  *
  * @REVOKED : The project has been cancelled.
  */
-package ssdut.cli.headhunterms.entity.enums;
+package ssdut.cli.headhunterms.enums;
 
 public enum Status {
   IN_PROGRESS,

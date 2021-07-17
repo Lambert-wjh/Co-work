@@ -1,13 +1,12 @@
-package ssdut.cli.headhunterms.entity.staff;
+package ssdut.cli.headhunterms.staff;
 
 import java.util.ArrayList;
 import java.util.List;
-import ssdut.cli.headhunterms.entity.Account;
-import ssdut.cli.headhunterms.entity.Factory;
-import ssdut.cli.headhunterms.entity.MethodSet;
-import ssdut.cli.headhunterms.entity.business.Project;
-import ssdut.cli.headhunterms.entity.enums.Position;
-import ssdut.cli.headhunterms.entity.enums.Sex;
+import ssdut.cli.headhunterms.Factory;
+import ssdut.cli.headhunterms.MethodSet;
+import ssdut.cli.headhunterms.business.Project;
+import ssdut.cli.headhunterms.enums.Position;
+import ssdut.cli.headhunterms.enums.Sex;
 
 public class Employee extends Person {
   protected String id;

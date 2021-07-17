@@ -2,17 +2,16 @@
  * This file is part of the Factory Pattern in the HeadhunterMS project. It contains all Factory
  * Pattern related functions.
  */
-package ssdut.cli.headhunterms.entity;
+package ssdut.cli.headhunterms;
 
 import java.time.LocalDate;
 import java.util.List;
-import ssdut.cli.headhunterms.database.DAO;
-import ssdut.cli.headhunterms.entity.business.Project;
-import ssdut.cli.headhunterms.entity.enums.Position;
-import ssdut.cli.headhunterms.entity.staff.Employee;
-import ssdut.cli.headhunterms.entity.staff.Leader;
-import ssdut.cli.headhunterms.entity.staff.Superuser;
-import ssdut.cli.headhunterms.entity.staff.Team;
+import ssdut.cli.headhunterms.business.Project;
+import ssdut.cli.headhunterms.enums.Position;
+import ssdut.cli.headhunterms.staff.Employee;
+import ssdut.cli.headhunterms.staff.Leader;
+import ssdut.cli.headhunterms.staff.Superuser;
+import ssdut.cli.headhunterms.staff.Team;
 
 /*
  * In the class Factory, we provide all different get functions to get object.

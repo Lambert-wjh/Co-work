@@ -6,8 +6,8 @@ package ssdut.cli.headhunterms.menu;
 
 import java.util.List;
 import java.util.Scanner;
-import ssdut.cli.headhunterms.entity.MethodSet;
-import ssdut.cli.headhunterms.entity.staff.Superuser;
+import ssdut.cli.headhunterms.MethodSet;
+import ssdut.cli.headhunterms.staff.Superuser;
 
 public class SuperuserMenu {
   // Superuser's menu start from here.

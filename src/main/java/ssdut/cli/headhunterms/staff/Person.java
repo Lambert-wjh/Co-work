@@ -1,6 +1,6 @@
-package ssdut.cli.headhunterms.entity.staff;
+package ssdut.cli.headhunterms.staff;
 
-import ssdut.cli.headhunterms.entity.enums.Sex;
+import ssdut.cli.headhunterms.enums.Sex;
 
 public class Person {
   protected String name;

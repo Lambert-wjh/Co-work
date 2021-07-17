@@ -1,8 +1,8 @@
-package ssdut.cli.headhunterms.entity.staff;
+package ssdut.cli.headhunterms.staff;
 
 import java.util.ArrayList;
 import java.util.List;
-import ssdut.cli.headhunterms.entity.MethodSet;
+import ssdut.cli.headhunterms.MethodSet;
 
 public class Team {
   private Leader leader;
