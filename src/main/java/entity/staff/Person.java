@@ -1,3 +1,7 @@
+/*
+ * This file is part of the staff in the HeadhunterMS project. It is the parent class for Employee,
+ * Leader and Superuser. And it contains the basic member variables of employees.
+ */
 package entity.staff;
 
 import entity.enums.Sex;

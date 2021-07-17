@@ -1,3 +1,7 @@
+/*
+ * This file is part of the Staff in the HeadhunterMS project. It contains all Leader's data
+ * structures and related functions listed in Leader's menu.
+ */
 package entity.staff;
 
 import java.time.LocalDate;
@@ -17,12 +21,14 @@ public class Leader extends Employee {
         super(id, name, sex, age, leader_id, position, sales, salary, password);
     }
 
+    // Check the information about the team members that you lead.
     public void checkTeamInfo() {
         Team team = Factory.getFactory().getTeam(this.id);
 
         System.out.print(team);
     }
 
+    // Update the Project's status.
     public void updateTheProjectStatus() {
         Scanner input = new Scanner(System.in);
         System.out.print("Enter company A's code of the project: ");
