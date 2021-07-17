@@ -1,3 +1,7 @@
+/*
+ * This file is part of the Staff in the HeadhunterMS project. It contains all Superuser's data
+ * structures and related functions listed in Superuser's menu.
+ */
 package ssdut.cli.headhunterms.staff;
 
 import java.time.LocalDate;
@@ -27,6 +31,7 @@ public class Superuser extends Leader {
     super(id, name, sex, age, leader_id, position, sales, salary, password);
   }
 
+  // Modify the information of any Employee.
   public void modifyStaffInfo() {
     Scanner input = new Scanner(System.in);
     System.out.print("Enter staff's ID: ");
@@ -77,6 +82,7 @@ public class Superuser extends Leader {
     }
   }
 
+  // Create a new Employee's information.
   public void createNewStaff() {
     Scanner input = new Scanner(System.in);
     System.out.print("Enter staff's ID: ");
@@ -100,6 +106,7 @@ public class Superuser extends Leader {
     }
   }
 
+  // Delete the Employee's record.
   public void deleteStaffRecord() {
     Scanner input = new Scanner(System.in);
     System.out.print("Enter staff's ID: ");
@@ -129,6 +136,7 @@ public class Superuser extends Leader {
     }
   }
 
+  // Update the Sales of all Staff based on project status.
   public void updateSales() {
     String select_clause = "SELECT leader_id FROM Project WHERE status='COMPLETED'";
     List<String> parameters = List.of();
@@ -193,6 +201,7 @@ public class Superuser extends Leader {
     System.out.println(MethodSet.formatAsTable(rows));
   }
 
+  // Update all Team's member_count in the Team table after Staff transfer.
   private void updateMemberCount() {
     String select_clause = "SELECT id FROM Employee WHERE position='LEADER'";
     List<String> parameters = List.of();
@@ -212,6 +221,7 @@ public class Superuser extends Leader {
     }
   }
 
+  // Create a new team and designate an employee as the team leader.
   public void createNewTeam() {
     Scanner input = new Scanner(System.in);
     System.out.print("Enter new team leader's ID: ");
@@ -256,6 +266,7 @@ public class Superuser extends Leader {
     this.updateMemberCount();
   }
 
+  // delete a Team record
   public void deleteTeamRecord() {
     Scanner input = new Scanner(System.in);
     System.out.print("Enter the team leader's ID: ");
@@ -289,6 +300,7 @@ public class Superuser extends Leader {
     }
   }
 
+  // Change the Employee's position within a team.
   public void changeTeamPosition() {
     Scanner input = new Scanner(System.in);
     System.out.print("Enter the team leader's ID: ");
@@ -366,6 +378,7 @@ public class Superuser extends Leader {
     System.out.println(new_team);
   }
 
+  // Transfer of Employees between different teams.
   public void transferEmployee() {
     Scanner input = new Scanner(System.in);
     System.out.print("Enter the employee's ID: ");
@@ -418,6 +431,7 @@ public class Superuser extends Leader {
     System.out.println(new_team);
   }
 
+  // Assign a new project to a team.
   public void createNewProject() {
     Scanner input = new Scanner(System.in);
     System.out.print("Enter company A's code: ");
@@ -447,6 +461,7 @@ public class Superuser extends Leader {
     }
   }
 
+  // delete a Project record
   public void deleteProjectRecord() {
     Scanner input = new Scanner(System.in);
     System.out.print("Enter company A's code of the project: ");
@@ -484,6 +499,7 @@ public class Superuser extends Leader {
     }
   }
 
+  // check the Project's information
   public void checkTheProjectInfo() {
     Scanner input = new Scanner(System.in);
     System.out.print("Enter company A's code of the project: ");
@@ -506,6 +522,7 @@ public class Superuser extends Leader {
     System.out.println(project);
   }
 
+  // update the Project's information
   public void updateTheProjectInfo() {
     Scanner input = new Scanner(System.in);
     System.out.print("Enter company A's code of the project: ");
@@ -578,6 +595,7 @@ public class Superuser extends Leader {
     }
   }
 
+  // update the Project's status
   @Override
   public void updateTheProjectStatus() {
     Scanner input = new Scanner(System.in);

@@ -1,3 +1,7 @@
+/*
+ * This file is part of the Staff in the HeadhunterMS project. It contains all Employee's data
+ * structures and related functions listed in Employee's menu.
+ */
 package ssdut.cli.headhunterms.staff;
 
 import java.util.ArrayList;
@@ -35,6 +39,17 @@ public class Employee extends Person {
     this.salary = salary;
   }
 
+  /*
+   * All get functions :
+   *
+   * @getId()
+   *
+   * @getAccount()
+   *
+   * @getPosition()
+   *
+   * @getSales()
+   */
   public String getId() {
     return this.id;
   }
@@ -51,6 +66,15 @@ public class Employee extends Person {
     return this.sales;
   }
 
+  /*
+   * Format the employee's information to a String :
+   *
+   * @toString()
+   *
+   * @getFieldName()
+   *
+   * @getFieldValue()
+   */
   @Override
   public String toString() {
     List<List<String>> rows = new ArrayList<>();
@@ -74,14 +98,17 @@ public class Employee extends Person {
         String.valueOf(this.salary));
   }
 
+  // Modify Employee's password
   public void changePassword() {
     this.account.setPassword();
   }
 
+  // Call the toString() @override to print employee's information
   public void checkStaffInfo() {
     System.out.print(this);
   }
 
+  // Check the projects information as employee privileges.
   public void checkProjectInfo() {
     String select_clause = null;
     List<String> parameters = new ArrayList<>();
