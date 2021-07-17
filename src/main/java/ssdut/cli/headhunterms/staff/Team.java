@@ -1,3 +1,7 @@
+/*
+ * This file is part of the Team in the HeadhunterMS project. It contains all Team-like data
+ * structures and functions.
+ */
 package ssdut.cli.headhunterms.staff;
 
 import java.util.ArrayList;
