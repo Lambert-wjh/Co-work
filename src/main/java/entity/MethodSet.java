@@ -1,3 +1,7 @@
+/*
+ * This file is part of the Auxiliary Methods in the HeadhunterMS project. It contains all Auxiliary
+ * Functions to help the other functions work better.
+ */
 package entity;
 
 import java.io.Console;
@@ -9,6 +13,12 @@ import org.jline.terminal.Terminal;
 import org.jline.terminal.TerminalBuilder;
 
 public class MethodSet {
+    /*
+     * Centered menu display
+     *
+     * @terminal : Get the terminal of the currently running program. And Initialization in
+     * static{...}
+     */
     private static final Terminal terminal;
     static {
         Terminal temp = null;
@@ -20,6 +30,13 @@ public class MethodSet {
         terminal = temp;
     }
 
+    /*
+     * Refresh menu display helper functions :
+     *
+     * @clearScreen()
+     *
+     * @postSwitch()
+     */
     public static void clearScreen() {
         System.out.print("\033[H\033[2J");
         System.out.flush();
@@ -37,6 +54,13 @@ public class MethodSet {
         }
     }
 
+    /*
+     * Formatting output helper functions :
+     *
+     * @formatAsTable
+     *
+     * @formatMenu
+     */
     public static String formatAsTable(List<List<String>> rows) {
         int[] max_lengths = new int[rows.get(0).size()];
         for (List<String> row : rows) {
