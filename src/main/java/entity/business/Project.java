@@ -1,3 +1,7 @@
+/*
+ * This file is part of the business in the HeadhunterMS project. It contains all project-like data
+ * structures and project-related functions.
+ */
 package entity.business;
 
 import java.time.LocalDate;
@@ -8,10 +12,10 @@ import entity.MethodSet;
 import entity.enums.Status;
 
 public class Project {
-    private String code_a;
-    private String code_b;
+    private String code_a; // Party A
+    private String code_b; // Party B
     private DateTimeFormatter date_formatter;
-    private LocalDate start;
+    private LocalDate start; // Project start date
     private double amount;
     private Status status;
     private String leader_id;
@@ -26,6 +30,10 @@ public class Project {
         this.status = status;
         this.leader_id = leader_id;
     }
+
+    /*
+     * All get functions
+     */
 
     public String getCodeA() {
         return this.code_a;
@@ -54,6 +62,10 @@ public class Project {
     public String getLeaderId() {
         return this.leader_id;
     }
+
+    /*
+     * Override the toString function to get the project information.
+     */
 
     @Override
     public String toString() {

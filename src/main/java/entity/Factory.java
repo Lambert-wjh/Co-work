@@ -1,3 +1,7 @@
+/*
+ * This file is part of the Factory Pattern in the HeadhunterMS project. It contains all Factory
+ * Pattern related functions.
+ */
 package entity;
 
 import java.time.LocalDate;
@@ -10,6 +14,9 @@ import entity.staff.Leader;
 import entity.staff.Superuser;
 import entity.staff.Team;
 
+/*
+ * In the class Factory, we provide all different get functions to get object.
+ */
 public class Factory {
     private static final Factory INSTANCE = new Factory();
 
