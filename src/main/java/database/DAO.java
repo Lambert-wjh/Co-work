@@ -1,3 +1,7 @@
+/*
+ * This file is the database part of the HeadhunterMS project. It is Data Access Object. And it
+ * contains all functions of DAO.
+ */
 package database;
 
 import java.sql.Connection;
@@ -19,7 +23,26 @@ import entity.staff.Leader;
 import entity.staff.Superuser;
 import entity.staff.Team;
 
+/*
+ * To reduce the performance overhead associated with connecting to the database, we use jdbc
+ * connection pool. Here is the Data Access Object.
+ */
 public class DAO {
+    /*
+     * Here is all the basic information about jdbc and connection pools.
+     *
+     * @url "jdbc:mysql://localhost/HeadhunterMS"
+     *
+     * @use "jdbc"
+     *
+     * @password "jdbcpassword"
+     *
+     * @connection_poll_timeout "1000"
+     *
+     * @idel_timeout "60000"
+     *
+     * @max_pool_size "15"
+     */
     private HikariDataSource data_source;
     private static final String JDBC_URL = "jdbc:mysql://localhost/HeadhunterMS";
     private static final String JDBC_USER = "jdbc";
@@ -29,6 +52,7 @@ public class DAO {
     private static final String MAX_POOL_SIZE = "15";
     private static final DAO INSTANCE = new DAO();
 
+    // Initialization
     private DAO() {
         HikariConfig config = new HikariConfig();
         config.setJdbcUrl(JDBC_URL);
@@ -40,10 +64,12 @@ public class DAO {
         data_source = new HikariDataSource(config);
     }
 
+    // @return DAO object
     public static DAO getDAO() {
         return INSTANCE;
     }
 
+    // Create teams for parameter requirements
     public List<Team> createTeams(String select_clause, List<String> parameters) {
         List<Team> teams = new ArrayList<>();
 
@@ -75,6 +101,7 @@ public class DAO {
         return teams;
     }
 
+    // Create employees for parameter requirements
     public List<Employee> createStaff(String select_clause, List<String> parameters) {
         List<Employee> employees = new ArrayList<>();
 
@@ -120,6 +147,7 @@ public class DAO {
         return employees;
     }
 
+    // Create projects for parameter requirements
     public List<Project> createProjects(String select_clause, List<String> parameters) {
         List<Project> projects = new ArrayList<Project>();
 
@@ -149,6 +177,7 @@ public class DAO {
         return projects;
     }
 
+    // Create attributes for parameter requirements
     public List<Object> createAttributes(String select_clause, List<String> parameters) {
         List<Object> attributes = new ArrayList<>();
 
@@ -174,6 +203,7 @@ public class DAO {
         return attributes;
     }
 
+    // Update the table for parameter requirements
     public int updateTable(String update_clause, List<String> parameters) {
         int update_count = 0;
 
