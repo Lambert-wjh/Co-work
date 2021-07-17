@@ -1,3 +1,7 @@
+/*
+ * This file is part of the menu in the HeadhunterMS project. It provides two-level menu for
+ * employees, contains entry points to each function.
+ */
 package menu;
 
 import java.util.List;
@@ -6,10 +10,12 @@ import entity.MethodSet;
 import entity.staff.Employee;
 
 public class EmployeeMenu {
+    // Employee's menu start from here.
     public void start(Employee user) {
         this.firstMenu(user);
     }
 
+    // First level menu
     private void firstMenu(Employee user) {
         Scanner input = new Scanner(System.in);
         int selection = 0;
@@ -29,6 +35,7 @@ public class EmployeeMenu {
 
     }
 
+    // Second level menu
     private void secondMenu(Employee user, int first_selection) {
         Scanner input = new Scanner(System.in);
         int selection = 0;

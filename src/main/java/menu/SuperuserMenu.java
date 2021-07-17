@@ -1,3 +1,7 @@
+/*
+ * This file is part of the menu in the HeadhunterMS project. It provides two-level menu for
+ * superuser, contains entry points to each function.
+ */
 package menu;
 
 import java.util.List;
@@ -6,10 +10,12 @@ import entity.MethodSet;
 import entity.staff.Superuser;
 
 public class SuperuserMenu {
+    // Superuser's menu start from here.
     public void start(Superuser user) {
         this.firstMenu(user);
     }
 
+    // First level menu
     private void firstMenu(Superuser user) {
         Scanner input = new Scanner(System.in);
         int selection = 0;
@@ -28,6 +34,7 @@ public class SuperuserMenu {
         System.out.println("Thank you for using");
     }
 
+    // Second level menu
     private void secondMenu(Superuser user, int first_selection) {
         Scanner input = new Scanner(System.in);
         int selection = 0;
