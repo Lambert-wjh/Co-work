@@ -38,7 +38,8 @@ public class Leader extends Employee {
         if (project == null) {
             System.err.println("No such a project");
             return;
-        } else if (!project.getLeaderId().equals(this.id)) {
+        } else if (!project.getLeaderId().equals(this.id) || project.getStatus() == Status.ARCHIVED
+                || project.getStatus() == Status.REVOKED) {
             System.err.println("You can't change the project");
             return;
         }

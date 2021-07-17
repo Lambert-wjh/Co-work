@@ -213,9 +213,6 @@ public class Superuser extends Leader {
         if (pre_leader == null) {
             System.err.println("No such staff");
             return;
-        } else if (pre_leader.getPosition() == Position.LEADER) {
-            System.err.println("This staff has led a team");
-            return;
         }
 
         String update_clause = "INSERT INTO Team (leader_id, member_count) VALUES (?, ?)";
@@ -233,9 +230,6 @@ public class Superuser extends Leader {
             Employee employee = Factory.getFactory().getEmployee(id);
             if (employee == null) {
                 System.err.println("No such staff");
-                continue;
-            } else if (employee.getPosition() != Position.EMPLOYEE) {
-                System.err.println("Not a employee and not been added");
                 continue;
             } else {
                 update_clause = "UPDATE Employee SET leader_id=? WHERE id=?";
@@ -356,8 +350,8 @@ public class Superuser extends Leader {
             return;
         }
 
-        Team new_team = Factory.getFactory().getTeam(new_leader_id);
         System.out.println("Now the team's information is as follows");
+        Team new_team = Factory.getFactory().getTeam(new_leader_id);
         System.out.println(new_team);
     }
 
@@ -406,7 +400,9 @@ public class Superuser extends Leader {
         }
 
         this.updateMemberCount();
-        System.out.println("Transfer successfully");
+        System.out.println("Transfer successfully, Now the team's information is as follows");
+        Team new_team = Factory.getFactory().getTeam(leader_id);
+        System.out.println(new_team);
     }
 
     public void createNewProject() {

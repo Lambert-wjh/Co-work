@@ -30,7 +30,7 @@ public class MethodSet {
         Reader reader = console.reader();
 
         try {
-            System.out.print("Enter any key to return...");
+            System.out.print("Press enter key to return...");
             reader.read();
         } catch (IOException e) {
             e.printStackTrace();
