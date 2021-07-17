@@ -6,8 +6,8 @@ package ssdut.cli.headhunterms.menu;
 
 import java.util.List;
 import java.util.Scanner;
-import ssdut.cli.headhunterms.entity.MethodSet;
-import ssdut.cli.headhunterms.entity.staff.Leader;
+import ssdut.cli.headhunterms.MethodSet;
+import ssdut.cli.headhunterms.staff.Leader;
 
 public class LeaderMenu {
   // Leader's menu start from here.

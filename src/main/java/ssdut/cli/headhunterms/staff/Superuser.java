@@ -1,17 +1,17 @@
-package ssdut.cli.headhunterms.entity.staff;
+package ssdut.cli.headhunterms.staff;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 import java.util.stream.Collectors;
-import ssdut.cli.headhunterms.database.DAO;
-import ssdut.cli.headhunterms.entity.Factory;
-import ssdut.cli.headhunterms.entity.MethodSet;
-import ssdut.cli.headhunterms.entity.business.Project;
-import ssdut.cli.headhunterms.entity.enums.Position;
-import ssdut.cli.headhunterms.entity.enums.Sex;
-import ssdut.cli.headhunterms.entity.enums.Status;
+import ssdut.cli.headhunterms.DAO;
+import ssdut.cli.headhunterms.Factory;
+import ssdut.cli.headhunterms.MethodSet;
+import ssdut.cli.headhunterms.business.Project;
+import ssdut.cli.headhunterms.enums.Position;
+import ssdut.cli.headhunterms.enums.Sex;
+import ssdut.cli.headhunterms.enums.Status;
 
 public class Superuser extends Leader {
   public Superuser(

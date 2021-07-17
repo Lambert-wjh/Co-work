@@ -2,11 +2,11 @@
  * This file is part of the account in the HeadhunterMS project. It contains all account-like data
  * structures and account password-related functions.
  */
-package ssdut.cli.headhunterms.entity;
+package ssdut.cli.headhunterms.staff;
 
 import java.io.Console;
 import java.util.List;
-import ssdut.cli.headhunterms.database.DAO;
+import ssdut.cli.headhunterms.DAO;
 
 public class Account {
   private String account;

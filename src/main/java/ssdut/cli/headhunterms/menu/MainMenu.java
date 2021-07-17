@@ -6,11 +6,11 @@ package ssdut.cli.headhunterms.menu;
 
 import java.io.Console;
 import java.util.Scanner;
-import ssdut.cli.headhunterms.entity.Factory;
-import ssdut.cli.headhunterms.entity.MethodSet;
-import ssdut.cli.headhunterms.entity.staff.Employee;
-import ssdut.cli.headhunterms.entity.staff.Leader;
-import ssdut.cli.headhunterms.entity.staff.Superuser;
+import ssdut.cli.headhunterms.Factory;
+import ssdut.cli.headhunterms.MethodSet;
+import ssdut.cli.headhunterms.staff.Employee;
+import ssdut.cli.headhunterms.staff.Leader;
+import ssdut.cli.headhunterms.staff.Superuser;
 
 public class MainMenu {
   /*

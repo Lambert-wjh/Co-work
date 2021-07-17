@@ -6,8 +6,8 @@ package ssdut.cli.headhunterms.menu;
 
 import java.util.List;
 import java.util.Scanner;
-import ssdut.cli.headhunterms.entity.MethodSet;
-import ssdut.cli.headhunterms.entity.staff.Employee;
+import ssdut.cli.headhunterms.MethodSet;
+import ssdut.cli.headhunterms.staff.Employee;
 
 public class EmployeeMenu {
   // Employee's menu start from here.

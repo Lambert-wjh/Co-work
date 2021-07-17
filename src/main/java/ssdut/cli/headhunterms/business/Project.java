@@ -2,14 +2,14 @@
  * This file is part of the business in the HeadhunterMS project. It contains all project-like data
  * structures and project-related functions.
  */
-package ssdut.cli.headhunterms.entity.business;
+package ssdut.cli.headhunterms.business;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
-import ssdut.cli.headhunterms.entity.MethodSet;
-import ssdut.cli.headhunterms.entity.enums.Status;
+import ssdut.cli.headhunterms.MethodSet;
+import ssdut.cli.headhunterms.enums.Status;
 
 public class Project {
   private String code_a; // Party A
