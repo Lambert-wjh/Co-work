@@ -13,7 +13,7 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/ma
     <dependencies>
         <dependency>
             <groupId>org.jline</groupId>
-            <artifactId>jline-terminal</artifactId>
+            <artifactId>jline</artifactId>
             <version>3.20.0</version>
         </dependency>
         <dependency>
